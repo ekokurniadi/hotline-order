@@ -34,7 +34,7 @@ class User extends MY_Controller
 		$search       = $this->input->post("search")["value"];
 		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
 
-		$where = "WHERE 1=1";
+		$where = "WHERE 1=1 and role != 'user'";
 		$result = array();
 		if (isset($search)) {
 			if ($search != '') {
@@ -71,7 +71,7 @@ class User extends MY_Controller
 		$index = 1;
 		$button = "";
 		$fetch = $this->db->query("SELECT * from user $where");
-		$fetch2 = $this->db->query("SELECT * from user ");
+		$fetch2 = $this->db->query("SELECT * from user where role != 'user'");
 		foreach ($fetch->result() as $rows) {
 			$button1 = "<a href=" . base_url('user/read/' . $rows->id) . " data-color='#265ed7' style='color: rgb(38, 94, 215);'><i class='icon-copy dw dw-eye'></i></a>";
 			$button2 = "<a href=" . base_url('user/update/' . $rows->id) . " data-color='orange' style='color: orange'><i class='icon-copy dw dw-edit1'></i></a>";

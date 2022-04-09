@@ -256,10 +256,20 @@
 						</a>
 						<ul class="submenu">
 							<li><a href="<?php echo base_url('user') ?>">User</a></li>
+							<li><a href="<?php echo base_url('pelanggan') ?>">Pelanggan</a></li>
 							<li><a href="<?php echo base_url('master_parts') ?>">Parts</a></li>
 						</ul>
 					</li>
-					
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle" data-option="off">
+							<span class="micon dw dw-money"></span><span class="mtext">Transaksi</span>
+						</a>
+						<ul class="submenu">
+							<li><a href="<?php echo base_url('pesanan') ?>">Pesanan</a></li>
+							<li><a href="<?php echo base_url('chat') ?>">Chat</a></li>
+						</ul>
+					</li>
+
 				</ul>
 			</div>
 		</div>

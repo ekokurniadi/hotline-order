@@ -6,8 +6,6 @@ if (!defined('BASEPATH'))
 class Master_parts extends MY_Controller
 {
 
-
-
 	function __construct()
 	{
 		parent::__construct();
@@ -44,7 +42,7 @@ class Master_parts extends MY_Controller
 							OR nama_barang LIKE '%$search%'
 							OR foto LIKE '%$search%'
 							OR harga LIKE '%$search%'
-	 )";
+							)";
 			}
 		}
 
@@ -67,7 +65,6 @@ class Master_parts extends MY_Controller
 			}
 		}
 		$index = 1;
-		$button = "";
 		$fetch = $this->db->query("SELECT * from master_parts $where");
 		$fetch2 = $this->db->query("SELECT * from master_parts ");
 		foreach ($fetch->result() as $rows) {
@@ -214,6 +211,51 @@ class Master_parts extends MY_Controller
 			$_SESSION['pesan'] = "Record Not Found";
 			$_SESSION['tipe'] = "error";
 			redirect(site_url('master_parts'));
+		}
+	}
+
+	public function upload_master_parts()
+	{
+		date_default_timezone_set('Asia/Jakarta');
+		$filename = $_FILES['file_part']['name'];
+		$this->load->library('upload');
+		$config['upload_path']   = './excel/';
+		$config['overwrite']     = true;
+		$config['allowed_types'] = 'xlsx';
+		$config['file_name'] = $_FILES['file_part']['name'];
+		$this->upload->initialize($config);
+		if ($_FILES['file_part']['name']) {
+			if ($this->upload->do_upload('file_part')) {
+				$gbr = $this->upload->data();
+				include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
+				$excelreader = new PHPExcel_Reader_Excel2007();
+				$loadexcel = $excelreader->load('excel/' . $filename . '');
+				$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true, true);
+				unset($sheet[1]);
+				foreach ($sheet as $rows) {
+					$cek = $this->db->get_where('master_parts', array('kode_barang' => $rows['A']));
+					$data = array(
+						"kode_barang" => $rows['A'],
+						"nama_barang" => $rows['B'],
+						"foto" => "",
+						"harga" => $rows['C'],
+					);
+
+
+					if ($cek->num_rows() <= 0) {
+						$insert = $this->db->insert('master_parts', $data);
+					}
+				}
+				if ($insert) {
+					echo json_encode(array("status" => "sukses", "link" => base_url('master_parts')));
+					$_SESSION['pesan'] = "Data Berhasil di Upload.";
+					$_SESSION['tipe'] = "success";
+				} else {
+					echo json_encode(array("status" => "error", "link" => base_url('master_parts')));
+					$_SESSION['pesan'] = "Data Gagal di Upload.";
+					$_SESSION['tipe'] = "error";
+				}
+			}
 		}
 	}
 
