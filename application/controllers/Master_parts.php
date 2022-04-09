@@ -216,6 +216,7 @@ class Master_parts extends MY_Controller
 
 	public function upload_master_parts()
 	{
+		ini_set('max_execution_time', '0');
 		date_default_timezone_set('Asia/Jakarta');
 		$filename = $_FILES['file_part']['name'];
 		$this->load->library('upload');
