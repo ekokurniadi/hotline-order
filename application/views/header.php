@@ -257,7 +257,11 @@
 						<ul class="submenu">
 							<li><a href="<?php echo base_url('user') ?>">User</a></li>
 							<li><a href="<?php echo base_url('pelanggan') ?>">Pelanggan</a></li>
+							<li><a href="<?php echo base_url('tipe_kendaraan') ?>">Tipe Kendaraan</a></li>
 							<li><a href="<?php echo base_url('master_parts') ?>">Parts</a></li>
+							<li><a href="<?php echo base_url('katalog_produk') ?>">Katalog Produk</a></li>
+							<li><a href="<?php echo base_url('profil_perusahaan') ?>">Profil Perusahaan</a></li>
+							<li><a href="<?php echo base_url('slide_show') ?>">Slide Show</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

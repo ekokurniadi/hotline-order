@@ -84,11 +84,9 @@
 										<div class="input-group mb-0">
 											<input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
 										</div>
-										
 									</div>
 								</div>
 							</form>
-
 					</div>
 				</div>
 			</div>
