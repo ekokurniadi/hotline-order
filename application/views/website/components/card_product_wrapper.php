@@ -91,7 +91,7 @@ if ($halaman < ($jumlah_halaman - $jumlah_link)) {
 	<div class="row">
 		<div class="col-md-12 mt-3">
 			<nav>
-				<ul class="pagination pagination-sm justify-content-center">
+				<ul class="pagination pagination-md justify-content-center">
 					<li class="page-item">
 						<a class="page-link" <?php if ($halaman > 1) {
 													echo "href='?halaman=$previous'";

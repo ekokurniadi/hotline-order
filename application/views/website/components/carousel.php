@@ -29,3 +29,14 @@
 		</div>
 	</div>
 </div>
+<style>
+	.carousel-control-prev {
+		background-color: transparent !important;
+		border: none !important;
+	}
+
+	.carousel-control-next {
+		background-color: transparent !important;
+		border: none !important;
+	}
+</style>
