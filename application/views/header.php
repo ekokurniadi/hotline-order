@@ -56,7 +56,7 @@
 		});
 	</script>
 </head>
-<?php if ($_SESSION['role'] == "" || $_SESSION['role'] == "Client") {
+<?php if ($_SESSION['role'] == "" || $_SESSION['role'] == "user") {
 	redirect('auth/logout');
 } ?>
 
@@ -262,6 +262,7 @@
 							<li><a href="<?php echo base_url('katalog_produk') ?>">Katalog Produk</a></li>
 							<li><a href="<?php echo base_url('profil_perusahaan') ?>">Profil Perusahaan</a></li>
 							<li><a href="<?php echo base_url('slide_show') ?>">Slide Show</a></li>
+							<li><a href="<?php echo base_url('cara_pemesanan') ?>">Cara Pemesanan</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

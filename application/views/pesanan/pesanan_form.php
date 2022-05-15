@@ -77,20 +77,6 @@
                     </div>
 	   
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Foto Ktp <?php echo form_error('foto_ktp') ?></label>
-                          <div class="col-sm-12 col-md-10">
-                            <input type="text" class="form-control" name="foto_ktp" id="foto_ktp" placeholder="Foto Ktp" value="<?php echo $foto_ktp; ?>" />
-                          </div>
-                    </div>
-	 
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Alamat Sesuai Ktp <?php echo form_error('alamat_sesuai_ktp') ?></label>
-                        <div class="col-sm-12 col-md-10">
-                        <textarea class="form-control" rows="3" name="alamat_sesuai_ktp" id="alamat_sesuai_ktp" placeholder="Alamat Sesuai Ktp"><?php echo $alamat_sesuai_ktp; ?></textarea>
-                        </div>
-                    </div>
-	   
-                    <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Nomor Hp <?php echo form_error('nomor_hp') ?></label>
                           <div class="col-sm-12 col-md-10">
                             <input type="text" class="form-control" name="nomor_hp" id="nomor_hp" placeholder="Nomor Hp" value="<?php echo $nomor_hp; ?>" />
@@ -98,9 +84,9 @@
                     </div>
 	 
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Catatan <?php echo form_error('catatan') ?></label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Keterangan <?php echo form_error('keterangan') ?></label>
                         <div class="col-sm-12 col-md-10">
-                        <textarea class="form-control" rows="3" name="catatan" id="catatan" placeholder="Catatan"><?php echo $catatan; ?></textarea>
+                        <textarea class="form-control" rows="3" name="keterangan" id="keterangan" placeholder="Keterangan"><?php echo $keterangan; ?></textarea>
                         </div>
                     </div>
 	   
@@ -108,6 +94,13 @@
                         <label class="col-sm-12 col-md-2 col-form-label">Status <?php echo form_error('status') ?></label>
                           <div class="col-sm-12 col-md-10">
                             <input type="text" class="form-control" name="status" id="status" placeholder="Status" value="<?php echo $status; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Foto Motor <?php echo form_error('foto_motor') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="foto_motor" id="foto_motor" placeholder="Foto Motor" value="<?php echo $foto_motor; ?>" />
                           </div>
                     </div>
 	

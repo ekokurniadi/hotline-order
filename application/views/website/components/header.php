@@ -20,6 +20,7 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="stylesheet" href="<?= base_url('assets/style.css') ?>">
+
 	<title>Website</title>
 
 	<style>
@@ -38,10 +39,16 @@
 			object-fit: cover;
 			object-position: center;
 		}
+
+		.badge {
+			position: absolute;
+			top: 7px;
+			background: yellow;
+		}
 	</style>
 </head>
 
-<body>
+<body onload="getKeranjang();">
 	<!-- navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #c01d02;">
 		<div class="container">
@@ -61,22 +68,30 @@
 						<a class="nav-link" href="<?= base_url('website/katalog') ?>">Katalog Produk</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Cara Pemesanan</a>
+						<a class="nav-link" href="<?= base_url('website/cara_pemesanan') ?>">Cara Pemesanan</a>
 					</li>
-					<?php if (isset($_SESSION['user_id']) != null || isset($_SESSION['user_id']) != '') {
-						echo ($_SESSION['user_id']);
+
+
+					<?php if (isset($_SESSION['id']) != null || isset($_SESSION['id']) != '' && isset($_SESSION['role']) == "user") {
+
 					?>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
-								Shopping
+
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('akun_saya/keranjang') ?>">
+								<i class="fa fa-shopping-cart"></i>
+								Keranjang
 							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="#">Keranjang</a>
-								<a class="dropdown-item" href="#">Checkout</a>
-								<a class="dropdown-item" href="#">Akun Saya</a>
-								<a class="dropdown-item" href="#">Logout</a>
-								<a class="dropdown-item" href="#">Pesan</a>
-							</div>
+							<span class="badge" id="badge"></span>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('akun_saya') ?>">
+								<i class="fa fa-user"></i> Akun Saya
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" onclick="return confirm('Anda yakin ingin logout?')" href="<?= base_url('auth_client/logout') ?>">
+								<i class="fa fa-sign-out"></i>
+							</a>
 						</li>
 					<?php } else { ?>
 						<li class="nav-item">
@@ -84,7 +99,7 @@
 
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Daftar</a>
+							<a class="nav-link" href="#" onclick="openModalRegister();">Daftar</a>
 
 						</li>
 					<?php } ?>
@@ -94,9 +109,53 @@
 	</nav>
 	<!-- end of navbar -->
 	<?php $this->load->view('website/components/modal_login') ?>
+	<?php $this->load->view('website/components/modal_register') ?>
 
 	<script>
 		function openModalLogin() {
 			$('#modalLogin').modal('show');
 		}
+
+		function openModalRegister() {
+			$('#modalRegister').modal('show');
+		}
+
+		$('#nx').on('click', function(w) {
+			$('.dropdown').toggleClass('show');
+			$('.dropdown-menu').toggleClass('show');
+		});
+
+		function getKeranjang() {
+			$.ajax({
+				url: '<?= base_url('website/get_keranjang') ?>',
+				type: 'POST',
+				data: {
+					id: '<?= $_SESSION['id'] ?>'
+				},
+				dataType: 'JSON',
+				success: function(response) {
+					$('#badge').html(response.total);
+				},
+				error: function() {
+					alert("Something Went Wrong !");
+				}
+			});
+		}
 	</script>
+
+	<?php
+	if (isset($_SESSION['pesan']) && $_SESSION['pesan'] <> '') {
+	?>
+		<script>
+			Swal.fire({
+				icon: '<?php echo $_SESSION['tipe'] ?>',
+				title: 'Notification',
+				text: '<?php echo $_SESSION['pesan'] ?>',
+
+			})
+		</script>
+	<?php
+	}
+	$_SESSION['pesan'] = '';
+
+	?>

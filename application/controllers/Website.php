@@ -8,6 +8,8 @@ class Website extends MY_Controller
 		parent::__construct();
 		$this->load->library('form_validation');
 		$this->load->model('Slide_show_model');
+		$this->load->model('Cara_pemesanan_model');
+		$this->load->model('Master_parts_model');
 	}
 
 	public function index()
@@ -98,5 +100,49 @@ class Website extends MY_Controller
 	public function download_katalog($katalog)
 	{
 		force_download('katalog/' . $katalog, NULL);
+	}
+
+	public function cara_pemesanan()
+	{
+		$this->load->view('website/components/header');
+		$data['data'] = $this->Cara_pemesanan_model->get_all();
+		$this->load->view('website/pages/cara_pemesanan', $data);
+		$this->load->view('website/components/footer');
+	}
+
+	public function keranjang_add()
+	{
+		$id = $this->input->post('id');
+		$part =  $this->Master_parts_model->get_by_id($id);
+
+		$data = array(
+			"id_user" => $_SESSION['id'],
+			"kode_barang" => $part->kode_barang,
+			"nama_barang" => $part->nama_barang,
+			"harga_barang" => $part->harga,
+			"qty_pesanan" => 1,
+			"subtotal" => $part->harga * 1,
+		);
+
+		$insert = $this->db->insert('keranjang', $data);
+		if ($insert) {
+			$response = [
+				"message" => "Berhasil menambahkan keranjang belanja",
+				"status" => 200,
+				"url" => base_url('akun_saya/keranjang'),
+			];
+			echo json_encode($response);
+		}
+	}
+
+	public function get_keranjang()
+	{
+		$id = $this->input->post('id');
+		$data = $this->db->query("SELECT * FROM keranjang where id_user ='$id'");
+		$response = [
+			"total" => $data->num_rows(),
+		];
+
+		echo json_encode($response);
 	}
 }

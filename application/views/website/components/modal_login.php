@@ -14,7 +14,7 @@
 						<form method="POST" action="<?= base_url('auth_client') ?>" class="needs-validation" novalidate="">
 							<form accept-charset="UTF-8" role="form" class="form-signin">
 								<tr>
-									<td><input type="text" required class="tanya" name="username" id="username" placeholder="Email"></td>
+									<td><input type="text" required class="tanya" name="username" id="username" placeholder="Username"></td>
 								</tr>
 								<tr>
 									<td><input type="password" required class="tanya" name="password" id="password" placeholder="Password"></td>

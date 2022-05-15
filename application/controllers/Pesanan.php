@@ -45,11 +45,10 @@ class Pesanan extends MY_Controller {
 	 AND (nomor_mesin LIKE '%$search%'
 	 AND (nomor_plat_kendaraan LIKE '%$search%'
 	 AND (foto_stnk LIKE '%$search%'
-	 AND (foto_ktp LIKE '%$search%'
-	 AND (alamat_sesuai_ktp LIKE '%$search%'
 	 AND (nomor_hp LIKE '%$search%'
-	 AND (catatan LIKE '%$search%'
+	 AND (keterangan LIKE '%$search%'
 	 AND (status LIKE '%$search%'
+	 AND (foto_motor LIKE '%$search%'
 	 )";
 	
               }
@@ -58,7 +57,7 @@ class Pesanan extends MY_Controller {
         if (isset($orders)) {
             if ($orders != '') {
               $order = $orders;
-              $order_column =['kode_pesanan','tanggal_dibuat','id_pelanggan','nama_lengkap','nomor_mesin','nomor_plat_kendaraan','foto_stnk','foto_ktp','alamat_sesuai_ktp','nomor_hp','catatan','status',];
+              $order_column =['kode_pesanan','tanggal_dibuat','id_pelanggan','nama_lengkap','nomor_mesin','nomor_plat_kendaraan','foto_stnk','nomor_hp','keterangan','status','foto_motor',];
               $order_clm  = $order_column[$order[0]['column']];
               $order_by   = $order[0]['dir'];
               $where .= " ORDER BY $order_clm $order_by ";
@@ -90,11 +89,10 @@ class Pesanan extends MY_Controller {
 	 $sub_array[]=$rows->nomor_mesin;
 	 $sub_array[]=$rows->nomor_plat_kendaraan;
 	 $sub_array[]=$rows->foto_stnk;
-	 $sub_array[]=$rows->foto_ktp;
-	 $sub_array[]=$rows->alamat_sesuai_ktp;
 	 $sub_array[]=$rows->nomor_hp;
-	 $sub_array[]=$rows->catatan;
+	 $sub_array[]=$rows->keterangan;
 	 $sub_array[]=$rows->status;
+	 $sub_array[]=$rows->foto_motor;
 	 
             $sub_array[]='<div class="table-actions">'.$button1." ".$button2." ".$button3.'</div>';
             $result[]      = $sub_array;
@@ -123,11 +121,10 @@ class Pesanan extends MY_Controller {
 		'nomor_mesin' => $row->nomor_mesin,
 		'nomor_plat_kendaraan' => $row->nomor_plat_kendaraan,
 		'foto_stnk' => $row->foto_stnk,
-		'foto_ktp' => $row->foto_ktp,
-		'alamat_sesuai_ktp' => $row->alamat_sesuai_ktp,
 		'nomor_hp' => $row->nomor_hp,
-		'catatan' => $row->catatan,
+		'keterangan' => $row->keterangan,
 		'status' => $row->status,
+		'foto_motor' => $row->foto_motor,
 	    );
             $this->load->view('header');
             $this->load->view('pesanan/pesanan_read', $data);
@@ -152,11 +149,10 @@ class Pesanan extends MY_Controller {
 	    'nomor_mesin' => set_value('nomor_mesin'),
 	    'nomor_plat_kendaraan' => set_value('nomor_plat_kendaraan'),
 	    'foto_stnk' => set_value('foto_stnk'),
-	    'foto_ktp' => set_value('foto_ktp'),
-	    'alamat_sesuai_ktp' => set_value('alamat_sesuai_ktp'),
 	    'nomor_hp' => set_value('nomor_hp'),
-	    'catatan' => set_value('catatan'),
+	    'keterangan' => set_value('keterangan'),
 	    'status' => set_value('status'),
+	    'foto_motor' => set_value('foto_motor'),
 	);
 
         $this->load->view('header');
@@ -179,11 +175,10 @@ class Pesanan extends MY_Controller {
 		'nomor_mesin' => $this->input->post('nomor_mesin',TRUE),
 		'nomor_plat_kendaraan' => $this->input->post('nomor_plat_kendaraan',TRUE),
 		'foto_stnk' => $this->input->post('foto_stnk',TRUE),
-		'foto_ktp' => $this->input->post('foto_ktp',TRUE),
-		'alamat_sesuai_ktp' => $this->input->post('alamat_sesuai_ktp',TRUE),
 		'nomor_hp' => $this->input->post('nomor_hp',TRUE),
-		'catatan' => $this->input->post('catatan',TRUE),
+		'keterangan' => $this->input->post('keterangan',TRUE),
 		'status' => $this->input->post('status',TRUE),
+		'foto_motor' => $this->input->post('foto_motor',TRUE),
 	    );
 
             $this->Pesanan_model->insert($data);
@@ -209,11 +204,10 @@ class Pesanan extends MY_Controller {
 		'nomor_mesin' => set_value('nomor_mesin', $row->nomor_mesin),
 		'nomor_plat_kendaraan' => set_value('nomor_plat_kendaraan', $row->nomor_plat_kendaraan),
 		'foto_stnk' => set_value('foto_stnk', $row->foto_stnk),
-		'foto_ktp' => set_value('foto_ktp', $row->foto_ktp),
-		'alamat_sesuai_ktp' => set_value('alamat_sesuai_ktp', $row->alamat_sesuai_ktp),
 		'nomor_hp' => set_value('nomor_hp', $row->nomor_hp),
-		'catatan' => set_value('catatan', $row->catatan),
+		'keterangan' => set_value('keterangan', $row->keterangan),
 		'status' => set_value('status', $row->status),
+		'foto_motor' => set_value('foto_motor', $row->foto_motor),
 	    );
             $this->load->view('header');
             $this->load->view('pesanan/pesanan_form', $data);
@@ -240,11 +234,10 @@ class Pesanan extends MY_Controller {
 		'nomor_mesin' => $this->input->post('nomor_mesin',TRUE),
 		'nomor_plat_kendaraan' => $this->input->post('nomor_plat_kendaraan',TRUE),
 		'foto_stnk' => $this->input->post('foto_stnk',TRUE),
-		'foto_ktp' => $this->input->post('foto_ktp',TRUE),
-		'alamat_sesuai_ktp' => $this->input->post('alamat_sesuai_ktp',TRUE),
 		'nomor_hp' => $this->input->post('nomor_hp',TRUE),
-		'catatan' => $this->input->post('catatan',TRUE),
+		'keterangan' => $this->input->post('keterangan',TRUE),
 		'status' => $this->input->post('status',TRUE),
+		'foto_motor' => $this->input->post('foto_motor',TRUE),
 	    );
 
             $this->Pesanan_model->update($this->input->post('id', TRUE), $data);
@@ -279,11 +272,10 @@ class Pesanan extends MY_Controller {
 	$this->form_validation->set_rules('nomor_mesin', 'nomor mesin', 'trim|required');
 	$this->form_validation->set_rules('nomor_plat_kendaraan', 'nomor plat kendaraan', 'trim|required');
 	$this->form_validation->set_rules('foto_stnk', 'foto stnk', 'trim|required');
-	$this->form_validation->set_rules('foto_ktp', 'foto ktp', 'trim|required');
-	$this->form_validation->set_rules('alamat_sesuai_ktp', 'alamat sesuai ktp', 'trim|required');
 	$this->form_validation->set_rules('nomor_hp', 'nomor hp', 'trim|required');
-	$this->form_validation->set_rules('catatan', 'catatan', 'trim|required');
+	$this->form_validation->set_rules('keterangan', 'keterangan', 'trim|required');
 	$this->form_validation->set_rules('status', 'status', 'trim|required');
+	$this->form_validation->set_rules('foto_motor', 'foto motor', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -294,5 +286,5 @@ class Pesanan extends MY_Controller {
 /* End of file Pesanan.php */
 /* Location: ./application/controllers/Pesanan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Eko Kurniadi 2022-04-09 07:13:57 */
+/* Generated by Eko Kurniadi 2022-05-14 06:42:42 */
 /* https://gocodings.web.com */

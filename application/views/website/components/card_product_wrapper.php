@@ -59,6 +59,11 @@ if ($halaman < ($jumlah_halaman - $jumlah_link)) {
 ?>
 <div class="container">
 	<div class="row">
+		<div class="col-md-12 text-center mt-3">
+			<h3 style="text-decoration: underline;">Daftar Produk</h3>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-6 offset-md-6 justify-content-end">
 			<p>
 			<form action="" method="post">
