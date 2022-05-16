@@ -19,6 +19,7 @@
 					<th>Harga</th>
 					<th style="text-align: center;">Kuantitas</th>
 					<th>Subtotal</th>
+					<th>Aksi</th>
 				</tr>
 				<tbody>
 					<tr v-for="(p,index) of parts">
@@ -30,18 +31,19 @@
 							<input type="number" @keypress="isNumber($event)" class="form-control" v-model="p.qty_pesanan" :empty-value="1">
 						</td>
 						<td>{{subtotal(p) | toCurrency}}</td>
+						<td>
+							<button @click.prevent="delDetails(index)" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i></button>
+						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<th colspan="5" style="text-align: right;font-weight:bold;">Total</th>
+						<th colspan="6" style="text-align: right;font-weight:bold;">Total</th>
 						<th>{{total |toCurrency}}</th>
 					</tr>
 					<tr>
-
-						<th colspan="6" style="text-align: right;">
-							<button class="btn btn-danger btn-md" id="hapusBtn">Hapus Keranjang</button>
-							<button class="btn btn-primary btn-md" id="checkoutBtn">Checkout</button>
+						<th colspan="7" style="text-align: right;">
+							<button class="btn btn-primary btn-md" type="button" id="checkoutBtn">Checkout</button>
 						</th>
 					</tr>
 				</tfoot>
@@ -53,8 +55,119 @@
 
 
 <?php $parts = $this->db->get_where('keranjang', ['id_user' => $_SESSION['id']])->result(); ?>
-<?php $this->load->view('akun_saya/components/modal_checkout'); ?>
+<style>
+	label {
+		font-weight: bold;
+		margin-top: 10px;
+	}
+</style>
+<div class="modal fade" id="modalCheckout" tabindex="-1" aria-labelledby="modalCheckout" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title text-danger" id="exampleModalLabel">Mohon untuk melengkapi Form Order</h5>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="POST" id="form_checkout" class="needs-validation" novalidate="" enctype="multipart/form-data">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="modal-title text-primary" id="exampleModalLabel" style="font-weight: bold;">Form Order</h5>
+							</div>
+							<div class="col-md-3">
+								<label for="">Nama Lengkap</label>
+								<input type="text" class="form-control" placeholder="Nama Lengkap" required value="<?= $_SESSION['nama_lengkap'] ?>">
+							</div>
+							<div class="col-md-3">
+								<label for="">No. Telpon</label>
+								<input type="text" class="form-control" placeholder="No Telpon" required value="<?= $_SESSION['no_hp'] ?>">
+							</div>
+							<div class="col-md-6">
+								<label for="">Alamat</label>
+								<input type="text" class="form-control" placeholder="Alamat" required value="<?= $_SESSION['alamat'] ?>">
+							</div>
+							<div class="col-md-3">
+								<label for="">No. Mesin</label>
+								<input type="text" class="form-control" placeholder="No. Mesin" required name="no_mesin" id="no_mesin">
+							</div>
+							<div class="col-md-3">
+								<label for="">No. Rangka</label>
+								<input type="text" class="form-control" placeholder="No. Rangka" required name="no_rangka" id="no_rangka">
+							</div>
+							<div class="col-md-3">
+								<label for="">No. Polisi</label>
+								<input type="text" class="form-control" placeholder="No. Polisi" required name="no_polisi" id="no_polisi">
+							</div>
+							<div class="col-md-3">
+								<?php $years = range(1900, strftime("%Y", time())); ?>
+								<label for="">Tahun Perakitan</label>
+								<select name="tahun_perakitan" class="form-control">
+									<option>Select Year</option>
+									<?php foreach ($years as $year) : ?>
+										<option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+									<?php endforeach; ?>
+								</select>
+
+							</div>
+							<div class="col-md-6">
+								<label for="">Upload Foto STNK</label>
+								<input type="file" ref="file1" @change="selectImage" class="form-control">
+							</div>
+							<div class="col-md-6">
+								<label for="">Upload Foto Motor</label>
+								<input type="file" ref="file2" @change="selectImageMotor" class="form-control">
+							</div>
+							<div class="col-md-6">
+								<div v-if="imagePreviewSTNK">
+									<div>
+										<img class="img-fluid my-3" :src="imagePreviewSTNK" alt="" />
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div v-if="imagePreviewMOTOR">
+									<div>
+										<img class="img-fluid my-3" :src="imagePreviewMOTOR" alt="" />
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12 mt-2 mb-4">
+								<button class="btn btn-danger btn-md">Proses</button>
+							</div>
+
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
+	var form_checkout = new Vue({
+		el: '#form_checkout',
+		data: {
+			imageSTNK: undefined,
+			imagePreviewSTNK: undefined,
+			imageMOTOR: undefined,
+			imagePreviewMOTOR: undefined,
+		},
+		methods: {
+			selectImage(event) {
+				this.imageSTNK = event.target.files[0]
+				this.imagePreviewSTNK = URL.createObjectURL(this.imageSTNK)
+			},
+			selectImageMotor(event) {
+				this.imageMOTOR = event.target.files[0]
+				this.imagePreviewMOTOR = URL.createObjectURL(this.imageMOTOR)
+			},
+		}
+	});
 	var form = new Vue({
 		el: '#form_',
 		data: {
@@ -72,6 +185,7 @@
 			}
 		},
 		methods: {
+
 			subtotal: function(p) {
 				return (p.harga_barang * p.qty_pesanan);
 			},
@@ -91,7 +205,24 @@
 				} else {
 					return true;
 				}
-			}
+			},
+			delDetails: function(index) {
+				$.ajax({
+					url: '<?= base_url('akun_saya/delete_keranjang') ?>',
+					data: {
+						id: form.parts[index].id
+					},
+					type: 'POST',
+					dataType: 'JSON',
+					success: function(res) {
+						form.parts.splice(index, 1);
+						alert(res.message);
+					},
+					error: function() {
+						alert("Opps, Something went wrong");
+					}
+				});
+			},
 		}
 	});
 

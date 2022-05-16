@@ -53,4 +53,17 @@ class Akun_saya extends MY_Controller
 		$data = $_POST['item'];
 		echo json_encode($data);
 	}
+
+	public function delete_keranjang()
+	{
+		$id = $this->input->post('id');
+		$delete = $this->db->query("DELETE FROM keranjang where id='$id'");
+		if ($delete) {
+			$response = [
+				"status" => 200,
+				"message" => "Berhasil menghapus keranjang"
+			];
+			echo json_encode($response);
+		}
+	}
 }
