@@ -36,7 +36,7 @@ class Auth_client extends MY_Controller
 				// store the user data to session
 				$this->session->set_userdata($this->auth->get_data());
 				$this->session->set_userdata("user_logged_in", true);
-				$_SESSION['pesan'] = "Selamat datang kembali " . $_SESSION['nama_lengkap'] . ". Selamat datang";
+				$_SESSION['pesan'] = "Selamat datang kembali " . $_SESSION['nama_lengkap'] . ".";
 				$_SESSION['tipe'] = "success";
 				redirect("website");
 			}
@@ -58,5 +58,43 @@ class Auth_client extends MY_Controller
 	public function forget()
 	{
 		$this->load->view('forget');
+	}
+
+	public function register()
+	{
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules("nama_lengkap", "nama_lengkap", "trim|required");
+		$this->form_validation->set_rules("jenis_kelamin", "jenis_kelamin", "trim|required");
+		$this->form_validation->set_rules("no_telepon", "no_telepon", "trim|required");
+		$this->form_validation->set_rules("alamat", "alamat", "trim|required");
+		$this->form_validation->set_rules("username", "username", "trim|required");
+		$this->form_validation->set_rules("password", "password", "trim|required");
+
+		if ($this->form_validation->run() == true) {
+			$data = array(
+				"nama_lengkap" => $this->input->post("nama_lengkap"),
+				"jenis_kelamin" => $this->input->post("jenis_kelamin"),
+				"no_hp" => $this->input->post("no_telepon"),
+				"alamat" => $this->input->post("alamat"),
+				"password" => $this->input->post("password"),
+				"username" => $this->input->post("username"),
+				"role" => "user",
+				"status" => "active"
+			);
+
+			$check = $this->db->get_where('user', ['username' => $this->input->post("username")])->num_rows();
+			if ($check <= 0) {
+				$insert = $this->db->insert("user", $data);
+				if ($insert) {
+					$_SESSION['pesan'] = "Registrasi Berhasil, silahkan login ke akun anda";
+					$_SESSION['tipe'] = "success";
+					redirect("website");
+				}
+			} else {
+				$_SESSION['pesan'] = "Username sudah terdaftar";
+				$_SESSION['tipe'] = "error";
+				redirect("website");
+			}
+		}
 	}
 }

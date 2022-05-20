@@ -22,6 +22,9 @@
 					<th>Aksi</th>
 				</tr>
 				<tbody>
+					<tr v-if="parts.length <= 0">
+						<td colspan="7" style="text-align: center;">Keranjang Belanja masih kosong, silahkan tambahkan terlebih dahulu di halaman utama</td>
+					</tr>
 					<tr v-for="(p,index) of parts">
 						<td class="text-center"><input type="checkbox" v-model="itemIds" :value="p"></td>
 						<td>{{p.kode_barang}}</td>
@@ -79,15 +82,15 @@
 							</div>
 							<div class="col-md-3">
 								<label for="">Nama Lengkap</label>
-								<input type="text" class="form-control" placeholder="Nama Lengkap" required value="<?= $_SESSION['nama_lengkap'] ?>">
+								<input type="text" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap" required value="<?= $_SESSION['nama_lengkap'] ?>">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Telpon</label>
-								<input type="text" class="form-control" placeholder="No Telpon" required value="<?= $_SESSION['no_hp'] ?>">
+								<input type="text" class="form-control" id="no_telepon" placeholder="No Telpon" required value="<?= $_SESSION['no_hp'] ?>">
 							</div>
 							<div class="col-md-6">
 								<label for="">Alamat</label>
-								<input type="text" class="form-control" placeholder="Alamat" required value="<?= $_SESSION['alamat'] ?>">
+								<input type="text" class="form-control" id="alamat" placeholder="Alamat" required value="<?= $_SESSION['alamat'] ?>">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Mesin</label>
@@ -104,8 +107,8 @@
 							<div class="col-md-3">
 								<?php $years = range(1900, strftime("%Y", time())); ?>
 								<label for="">Tahun Perakitan</label>
-								<select name="tahun_perakitan" class="form-control">
-									<option>Select Year</option>
+								<select name="tahun_perakitan" class="form-control" id="tahun_perakitan">
+									<option>Pilih Tahun</option>
 									<?php foreach ($years as $year) : ?>
 										<option value="<?php echo $year; ?>"><?php echo $year; ?></option>
 									<?php endforeach; ?>
@@ -114,11 +117,11 @@
 							</div>
 							<div class="col-md-6">
 								<label for="">Upload Foto STNK</label>
-								<input type="file" ref="file1" @change="selectImage" class="form-control">
+								<input type="file" ref="file1" @change="selectImage" class="form-control" id="foto_stnk">
 							</div>
 							<div class="col-md-6">
 								<label for="">Upload Foto Motor</label>
-								<input type="file" ref="file2" @change="selectImageMotor" class="form-control">
+								<input type="file" ref="file2" @change="selectImageMotor" class="form-control" id="foto_motor">
 							</div>
 							<div class="col-md-6">
 								<div v-if="imagePreviewSTNK">
@@ -137,7 +140,7 @@
 							</div>
 
 							<div class="col-md-12 mt-2 mb-4">
-								<button class="btn btn-danger btn-md">Proses</button>
+								<button class="btn btn-danger btn-md" type="button" id="processBtn">Proses</button>
 							</div>
 
 						</div>
@@ -168,10 +171,12 @@
 			},
 		}
 	});
+
+
+
 	var form = new Vue({
 		el: '#form_',
 		data: {
-
 			allSelected: false,
 			itemSelected: [],
 			itemIds: [],
@@ -185,8 +190,8 @@
 			}
 		},
 		methods: {
-
 			subtotal: function(p) {
+				p.subtotal = p.harga_barang * p.qty_pesanan;
 				return (p.harga_barang * p.qty_pesanan);
 			},
 			selectAll: function() {
@@ -225,6 +230,84 @@
 			},
 		}
 	});
+
+
+	$("#processBtn").click(function() {
+		var formData = new FormData();
+		var fileSTNK = $('#foto_stnk')[0].files;
+		var fileMotor = $('#foto_motor')[0].files;
+		var noMesin = $('#no_mesin').val();
+		var noRangka = $('#no_rangka').val();
+		var noPolisi = $('#no_polisi').val();
+		var tahunPerakitan = $('#tahun_perakitan').val();
+		var alamat = $('#alamat').val();
+		var noTelepon = $('#no_telepon').val();
+		var namaLengkap = $('#nama_lengkap').val();
+		var values = {}
+		// validasi 
+		if (namaLengkap === "" || namaLengkap === undefined) {
+			alert('Nama Lengkap Wajib di isi');
+			return;
+		}
+		if (alamat === "" || alamat === undefined) {
+			alert('Alamat Wajib di isi');
+			return;
+		}
+		if (noTelepon === "" || noTelepon === undefined) {
+			alert('No Telepon Wajib di isi');
+			return;
+		}
+		if (noMesin === "" || noMesin === undefined) {
+			alert('No Mesin Wajib di isi');
+			return;
+		}
+		if (noRangka === "" || noRangka === undefined) {
+			alert('No Rangka Wajib di isi');
+			return;
+		}
+		if (noPolisi === "" || noPolisi === undefined) {
+			alert('No Polisi Wajib di isi');
+			return;
+		}
+		if (tahunPerakitan === "" || tahunPerakitan === undefined) {
+			alert('Tahun Perakitan Wajib di isi');
+			return;
+		}
+
+		if (fileSTNK.length > 0 && fileMotor.length > 0) {
+			formData.append('foto_stnk', fileSTNK[0]);
+			formData.append('foto_motor', fileMotor[0]);
+			formData.append('nama_lengkap', namaLengkap);
+			formData.append('alamat', alamat);
+			formData.append('no_mesin', noMesin);
+			formData.append('no_rangka', noRangka);
+			formData.append('no_polisi', noPolisi);
+			formData.append('no_telepon', noTelepon);
+			formData.append('tahun_perakitan', tahunPerakitan);
+			formData.append('details', JSON.stringify(form.itemIds));
+
+
+			$.ajax({
+				enctype: 'multipart/form-data',
+				url: '<?= base_url('akun_saya/proses_checkout') ?>',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				cache: false,
+				dataType: 'JSON',
+				success: function(response) {
+					alert(response.message);
+					window.location = '<?= base_url('akun_saya/keranjang') ?>';
+				}
+			});
+
+		} else {
+			alert('Foto STNK dan Foto Motor wajib di upload');
+		}
+	});
+
+
 
 	$('#checkoutBtn').click(function() {
 		if (form.itemIds == "" || form.itemIds == []) {
