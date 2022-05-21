@@ -56,16 +56,37 @@
                     </div>
 	   
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Nomor Mesin <?php echo form_error('nomor_mesin') ?></label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Alamat <?php echo form_error('alamat') ?></label>
                           <div class="col-sm-12 col-md-10">
-                            <input type="text" class="form-control" name="nomor_mesin" id="nomor_mesin" placeholder="Nomor Mesin" value="<?php echo $nomor_mesin; ?>" />
+                            <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Alamat" value="<?php echo $alamat; ?>" />
                           </div>
                     </div>
 	   
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Nomor Plat Kendaraan <?php echo form_error('nomor_plat_kendaraan') ?></label>
+                        <label class="col-sm-12 col-md-2 col-form-label">No Mesin <?php echo form_error('no_mesin') ?></label>
                           <div class="col-sm-12 col-md-10">
-                            <input type="text" class="form-control" name="nomor_plat_kendaraan" id="nomor_plat_kendaraan" placeholder="Nomor Plat Kendaraan" value="<?php echo $nomor_plat_kendaraan; ?>" />
+                            <input type="text" class="form-control" name="no_mesin" id="no_mesin" placeholder="No Mesin" value="<?php echo $no_mesin; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">No Rangka <?php echo form_error('no_rangka') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="no_rangka" id="no_rangka" placeholder="No Rangka" value="<?php echo $no_rangka; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">No Polisi <?php echo form_error('no_polisi') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="no_polisi" id="no_polisi" placeholder="No Polisi" value="<?php echo $no_polisi; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">No Telepon <?php echo form_error('no_telepon') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="no_telepon" id="no_telepon" placeholder="No Telepon" value="<?php echo $no_telepon; ?>" />
                           </div>
                     </div>
 	   
@@ -77,17 +98,10 @@
                     </div>
 	   
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Nomor Hp <?php echo form_error('nomor_hp') ?></label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Foto Motor <?php echo form_error('foto_motor') ?></label>
                           <div class="col-sm-12 col-md-10">
-                            <input type="text" class="form-control" name="nomor_hp" id="nomor_hp" placeholder="Nomor Hp" value="<?php echo $nomor_hp; ?>" />
+                            <input type="text" class="form-control" name="foto_motor" id="foto_motor" placeholder="Foto Motor" value="<?php echo $foto_motor; ?>" />
                           </div>
-                    </div>
-	 
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Keterangan <?php echo form_error('keterangan') ?></label>
-                        <div class="col-sm-12 col-md-10">
-                        <textarea class="form-control" rows="3" name="keterangan" id="keterangan" placeholder="Keterangan"><?php echo $keterangan; ?></textarea>
-                        </div>
                     </div>
 	   
                     <div class="form-group row">
@@ -98,9 +112,30 @@
                     </div>
 	   
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Foto Motor <?php echo form_error('foto_motor') ?></label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Tahun Perakitan <?php echo form_error('tahun_perakitan') ?></label>
                           <div class="col-sm-12 col-md-10">
-                            <input type="text" class="form-control" name="foto_motor" id="foto_motor" placeholder="Foto Motor" value="<?php echo $foto_motor; ?>" />
+                            <input type="text" class="form-control" name="tahun_perakitan" id="tahun_perakitan" placeholder="Tahun Perakitan" value="<?php echo $tahun_perakitan; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Is Payment <?php echo form_error('is_payment') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="is_payment" id="is_payment" placeholder="Is Payment" value="<?php echo $is_payment; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Is Come <?php echo form_error('is_come') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="is_come" id="is_come" placeholder="Is Come" value="<?php echo $is_come; ?>" />
+                          </div>
+                    </div>
+	   
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Bukti Bayar <?php echo form_error('bukti_bayar') ?></label>
+                          <div class="col-sm-12 col-md-10">
+                            <input type="text" class="form-control" name="bukti_bayar" id="bukti_bayar" placeholder="Bukti Bayar" value="<?php echo $bukti_bayar; ?>" />
                           </div>
                     </div>
 	

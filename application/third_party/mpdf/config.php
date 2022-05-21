@@ -480,8 +480,7 @@ $this->defaultCSS = array(
 	'DL' => array(
 		'MARGIN' => '1.67em 0',
 	),
-	'DT' => array(
-	),
+	'DT' => array(),
 	'DD' => array(
 		'PADDING-LEFT' => '40px',
 	),
@@ -495,10 +494,8 @@ $this->defaultCSS = array(
 		'HYPHENS' => 'manual', /* mPDF 6 */
 		'FONT-KERNING' => 'auto', /* mPDF 6 */
 	),
-	'THEAD' => array(
-	),
-	'TFOOT' => array(
-	),
+	'THEAD' => array(),
+	'TFOOT' => array(),
 	'TH' => array(
 		'FONT-WEIGHT' => 'bold',
 		'TEXT-ALIGN' => 'center',
