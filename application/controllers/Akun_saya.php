@@ -253,6 +253,7 @@ class Akun_saya extends MY_Controller
 
 	public function save_profile()
 	{
+		
 		$data = array(
 			"nama_lengkap" => $_POST['nama_lengkap'],
 			"jenis_kelamin" => $_POST['jenis_kelamin'],
