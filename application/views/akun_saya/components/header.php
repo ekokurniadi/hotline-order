@@ -144,3 +144,22 @@
 							}
 						}
 					</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div style="margin-top: 8px" id="message">
+		<?php
+		if (isset($_SESSION['pesan']) && $_SESSION['pesan'] <> '') {
+		?>
+			<script>
+				Swal.fire({
+					icon: '<?php echo $_SESSION['tipe'] ?>',
+					title: 'Notification',
+					text: '<?php echo $_SESSION['pesan'] ?>',
+
+				})
+			</script>
+		<?php
+		}
+		$_SESSION['pesan'] = '';
+
+		?>
+	</div>

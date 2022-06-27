@@ -234,6 +234,8 @@ class Pesanan extends MY_Controller
 			'is_come' => $row->is_come,
 			'bukti_bayar' => $row->bukti_bayar,
 		);
+		
+		
 		$this->load->library('pdf');
 		$mpdf                           = $this->pdf->load();
 		$mpdf->allow_charset_conversion = false;  // Set by default to TRUE

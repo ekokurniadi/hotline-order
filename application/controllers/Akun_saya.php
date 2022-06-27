@@ -36,8 +36,18 @@ class Akun_saya extends MY_Controller
 	}
 	public function profile()
 	{
+		
+		$user = $this->db->get_where('user', ['id' => $_SESSION['id']])->row();
+		$data = array(
+			"id" => $user->id,
+			"nama_lengkap" => $user->nama_lengkap,
+			"jenis_kelamin" => $user->jenis_kelamin,
+			"alamat" => $user->alamat,
+			"username" => $user->username,
+			"password" => $user->password,
+		);
 		$this->load->view('akun_saya/components/header');
-		$this->load->view('akun_saya/pages/profile');
+		$this->load->view('akun_saya/pages/profile', $data);
 		$this->load->view('akun_saya/components/footer');
 	}
 
@@ -230,6 +240,36 @@ class Akun_saya extends MY_Controller
 				"status" => 200,
 				"message" => "Bukti pembayaran berhasil di upload"
 			));
+		}
+	}
+
+	public function no_rekening()
+	{
+		$data = array();
+		$this->load->view('akun_saya/components/header');
+		$this->load->view('akun_saya/pages/no_rekening', $data);
+		$this->load->view('akun_saya/components/footer');
+	}
+
+	public function save_profile()
+	{
+		$data = array(
+			"nama_lengkap" => $_POST['nama_lengkap'],
+			"jenis_kelamin" => $_POST['jenis_kelamin'],
+			"alamat" => $_POST['alamat'],
+			"username" => $_POST['username'],
+			"password" => $_POST['password'],
+		);
+		$this->db->where('id', $_POST['id']);
+		$insert = $this->db->update('user', $data);
+		if ($insert) {
+			$_SESSION['pesan'] = "Simpan Data Profil Berhasil";
+			$_SESSION['tipe'] = "success";
+			redirect(site_url('akun_saya/profile'));
+		} else {
+			$_SESSION['pesan'] = "Simpan Data Profil Gagal";
+			$_SESSION['tipe'] = "error";
+			redirect(site_url('akun_saya/profile'));
 		}
 	}
 }
