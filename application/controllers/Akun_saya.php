@@ -6,13 +6,23 @@ class Akun_saya extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('Pesanan_model');
 		$this->load->library('form_validation');
 	}
 
 	public function index()
 	{
+		$user = $this->db->get_where('user', ['id' => $_SESSION['id']])->row();
+		$data = array(
+			"id" => $user->id,
+			"nama_lengkap" => $user->nama_lengkap,
+			"jenis_kelamin" => $user->jenis_kelamin,
+			"alamat" => $user->alamat,
+			"username" => $user->username,
+			"password" => $user->password,
+		);
 		$this->load->view('akun_saya/components/header');
-		$this->load->view('akun_saya/pages/index');
+		$this->load->view('akun_saya/pages/profile', $data);
 		$this->load->view('akun_saya/components/footer');
 	}
 
@@ -20,6 +30,12 @@ class Akun_saya extends MY_Controller
 	{
 		$this->load->view('akun_saya/components/header');
 		$this->load->view('akun_saya/pages/keranjang');
+		$this->load->view('akun_saya/components/footer');
+	}
+	public function informasi()
+	{
+		$this->load->view('akun_saya/components/header');
+		$this->load->view('akun_saya/pages/informasi');
 		$this->load->view('akun_saya/components/footer');
 	}
 	public function checkout()
@@ -102,6 +118,45 @@ class Akun_saya extends MY_Controller
 		return $string;
 	}
 
+	public function download_invoice($id)
+	{
+		$row = $this->Pesanan_model->get_by_id($id);
+		$data = array(
+			'id' => $row->id,
+			'kode_pesanan' => $row->kode_pesanan,
+			'tanggal_dibuat' => $row->tanggal_dibuat,
+			'id_pelanggan' => $row->id_pelanggan,
+			'nama_lengkap' => $row->nama_lengkap,
+			'alamat' => $row->alamat,
+			'no_mesin' => $row->no_mesin,
+			'no_rangka' => $row->no_rangka,
+			'no_polisi' => $row->no_polisi,
+			'no_telepon' => $row->no_telepon,
+			'foto_stnk' => $row->foto_stnk,
+			'foto_motor' => $row->foto_motor,
+			'status' => $row->status,
+			'tahun_perakitan' => $row->tahun_perakitan,
+			'is_payment' => $row->is_payment,
+			'is_come' => $row->is_come,
+			'bukti_bayar' => $row->bukti_bayar,
+		);
+		
+		
+		$this->load->library('pdf');
+		$mpdf                           = $this->pdf->load();
+		$mpdf->allow_charset_conversion = false;  // Set by default to TRUE
+		$mpdf->charset_in               = 'UTF-8';
+		$mpdf->autoLangToFont           = true;
+		$mpdf->AddPage('P');
+		
+		$mpdf->SetDisplayMode('fullwidth');
+		$html = $this->load->view('pesanan/invoice', $data, true);
+
+		$mpdf->WriteHTML($html);
+		$output = 'Invoice Hotline Order' . '.pdf';
+		$mpdf->Output("$output", 'I');
+	}
+
 	public function proses_checkout()
 	{
 		date_default_timezone_set('Asia/Jakarta');
@@ -161,7 +216,14 @@ class Akun_saya extends MY_Controller
 		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
 		$status       = $this->input->post('status') == "" ? "belum_bayar" : $this->input->post('status');
 
-		$where = "WHERE 1=1 AND status ='{$status}'";
+		$ignore =" AND is_payment != '0'";
+
+		if($status=="selesai"){
+			$where = "WHERE 1=1 AND status ='{$status}' and id_pelanggan='{$_SESSION['id']}' $ignore ";
+		}else{
+			$where = "WHERE 1=1 AND status ='{$status}' and id_pelanggan='{$_SESSION['id']}' ";
+		}
+
 		$result = array();
 		if (isset($search)) {
 			if ($search != '') {
@@ -169,8 +231,6 @@ class Akun_saya extends MY_Controller
 						OR tanggal_dibuat LIKE '%$search%'
 						OR id_pelanggan LIKE '%$search%'
 						OR nama_lengkap LIKE '%$search%'
-						OR nomor_mesin LIKE '%$search%'
-						OR nomor_plat_kendaraan LIKE '%$search%'
 						OR foto_stnk LIKE '%$search%'
 						OR nomor_hp LIKE '%$search%'
 						OR keterangan LIKE '%$search%'
@@ -200,9 +260,10 @@ class Akun_saya extends MY_Controller
 		$index = 1;
 		$button = "";
 		$fetch = $this->db->query("SELECT * from pesanan $where");
-		$fetch2 = $this->db->query("SELECT * from pesanan where status ='{$status}'");
+		$fetch2 = $this->db->query("SELECT * from pesanan where status ='{$status}' and id_pelanggan='{$_SESSION['id']}'");
 		foreach ($fetch->result() as $rows) {
 			$button = '<a href="' . base_url('akun_saya/detail_pesanan/' . $rows->kode_pesanan) . '" class="btn btn-success btn-sm btn-flat">Detail</a>';
+			$button2 = '<a href="' . base_url('akun_saya/download_invoice/' . $rows->id) . '" class="btn btn-primary btn-sm btn-flat">Download Invoice</a>';
 
 			$sub_array = array();
 			$sub_array[] = $index;
@@ -210,7 +271,7 @@ class Akun_saya extends MY_Controller
 			$sub_array[] = formatTanggal($rows->tanggal_dibuat);
 			$sub_array[] = number_format($this->db->query("SELECT COALESCE(SUM(subtotal)) as subtotal from pesanan_detail_barang where kode_pesanan='$rows->kode_pesanan'")->row()->subtotal, 0, ',', '.');
 			$sub_array[] = $rows->is_payment == 0 ? '<span class="badge badge-danger">Belum Lunas</span>' : '<span class="badge badge-success">Lunas</span>';
-			$sub_array[] = $button;
+			$sub_array[] = $button ." ".$button2 ;
 			$result[]      = $sub_array;
 			$index++;
 		}
@@ -271,6 +332,21 @@ class Akun_saya extends MY_Controller
 			$_SESSION['pesan'] = "Simpan Data Profil Gagal";
 			$_SESSION['tipe'] = "error";
 			redirect(site_url('akun_saya/profile'));
+		}
+	}
+
+	public function batal_pesanan($id){
+		$this->db->where('kode_pesanan',$id);
+		$update = $this->db->update('pesanan',['status'=>'batal']);
+
+		if ($update) {
+			$_SESSION['pesan'] = "Update Data Berhasil";
+			$_SESSION['tipe'] = "success";
+			redirect(site_url('akun_saya/checkout?status=batal'));
+		} else {
+			$_SESSION['pesan'] = "Update Data Gagal";
+			$_SESSION['tipe'] = "error";
+			redirect(site_url('akun_saya/checkout'));
 		}
 	}
 }

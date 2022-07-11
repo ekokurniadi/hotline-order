@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 07 Jun 2022 pada 13.20
+-- Generation Time: 08 Jul 2022 pada 06.14
 -- Versi Server: 10.1.28-MariaDB
 -- PHP Version: 5.6.32
 
@@ -116,9 +116,9 @@ CREATE TABLE `keranjang` (
 --
 
 INSERT INTO `keranjang` (`id`, `id_user`, `kode_barang`, `nama_barang`, `harga_barang`, `qty_pesanan`, `subtotal`) VALUES
-(11, 2, '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000),
 (12, 2, '04801K0G900ZB', 'COVER COMP R BODYTE', 879500, 1, 879500),
-(13, 2, '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 1, 10677500);
+(13, 2, '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 1, 10677500),
+(14, 2, '04801K0G900ZB', 'COVER COMP R BODYTE', 879500, 1, 879500);
 
 -- --------------------------------------------------------
 
@@ -42081,7 +42081,8 @@ INSERT INTO `pesanan` (`id`, `kode_pesanan`, `tanggal_dibuat`, `id_pelanggan`, `
 (20, 'BIz4JsCY7L', '2022-05-17', 2, 'Robby', 'Bangka', 'a', 'a', 'a', '0813123456', 'BIz4JsCY7L_1652757480.PNG', 'BIz4JsCY7L_16527574801.PNG', '', 1907, 0, 0, NULL),
 (21, 'MUl763WJM8', '2022-05-19', 3, 'Budi Handoko', 'Kumpeh', 'JF91E1146380', 'MH1JF911XBK1483', 'BH 3331 ZI', '0895604730750', 'MUl763WJM8_1652930534.PNG', 'MUl763WJM8_16529305341.PNG', '', 2021, 0, 0, NULL),
 (22, 'N9yTutBj14', '2022-05-19', 2, 'Robby', 'Bangka', 'JB91E2727345', 'JB9121BK736191', 'BH 3331 ZI', '0813123456', 'N9yTutBj14_1652947741.PNG', 'N9yTutBj14_16529477411.PNG', '', 2021, 0, 0, NULL),
-(23, 'fablpqJ2Mv', '2022-05-20', 2, 'Robby', 'Bangka', 'JBP1E1049342', 'JBP111JK649286', 'BH 4516 ZD', '0813123456', 'fablpqJ2Mv_1653055000.PNG', 'fablpqJ2Mv_16530550001.PNG', 'proses', 2021, 1, 0, 'bukti_bayar_1653060720.PNG');
+(23, 'fablpqJ2Mv', '2022-05-20', 2, 'Robby', 'Bangka', 'JBP1E1049342', 'JBP111JK649286', 'BH 4516 ZD', '1', 'fablpqJ2Mv_1653055000.PNG', 'fablpqJ2Mv_16530550001.PNG', 'selesai', 2021, 0, 1, 'bukti_bayar_1653060720.PNG'),
+(24, 'VurAFsX8A4', '2022-07-07', 2, 'Robby', 'Bangka', '123', '123', '123', '0813123456', 'VurAFsX8A4_1657185513.PNG', 'VurAFsX8A4_16571855131.PNG', 'batal', 2020, 0, 0, 'bukti_bayar_1657185633.PNG');
 
 -- --------------------------------------------------------
 
@@ -42096,33 +42097,36 @@ CREATE TABLE `pesanan_detail_barang` (
   `nama_barang` varchar(255) NOT NULL,
   `harga_barang` double NOT NULL,
   `qty_pesanan` int(11) NOT NULL,
-  `subtotal` double NOT NULL
+  `subtotal` double NOT NULL,
+  `come` int(2) NOT NULL DEFAULT '0',
+  `is_take` int(2) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `pesanan_detail_barang`
 --
 
-INSERT INTO `pesanan_detail_barang` (`id`, `kode_pesanan`, `kode_barang`, `nama_barang`, `harga_barang`, `qty_pesanan`, `subtotal`) VALUES
-(35, 'ZMFqoyzfoJ', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000),
-(36, 'ZMFqoyzfoJ', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000),
-(37, 'ZMFqoyzfoJ', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000),
-(38, '5HAS6VxVYt', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000),
-(39, '5HAS6VxVYt', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000),
-(40, '5HAS6VxVYt', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000),
-(41, 'BIz4JsCY7L', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000),
-(42, 'BIz4JsCY7L', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000),
-(43, 'BIz4JsCY7L', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000),
-(44, 'MUl763WJM8', '03512HDL000', 'HONDA DISC LOCK', 96500, 1, 96500),
-(45, 'MUl763WJM8', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000),
-(46, 'MUl763WJM8', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000),
-(47, 'N9yTutBj14', '03512HDL000', 'HONDA DISC LOCK', 96500, 1, 96500),
-(48, 'N9yTutBj14', '04101MJSJ20', 'COVER COMP., A.C. GENERATOR', 2758500, 1, 2758500),
-(49, 'N9yTutBj14', '04801K0G900ZB', 'COVER COMP R BODYTE', 879500, 1, 879500),
-(50, 'N9yTutBj14', '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 2, 21355000),
-(51, 'N9yTutBj14', '04801K0G900ZD', 'COVER COMP R BODYTE', 879500, 1, 879500),
-(52, 'fablpqJ2Mv', '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 1, 10677500),
-(53, 'fablpqJ2Mv', '06111K26920', 'GASKET KIT A', 113000, 1, 113000);
+INSERT INTO `pesanan_detail_barang` (`id`, `kode_pesanan`, `kode_barang`, `nama_barang`, `harga_barang`, `qty_pesanan`, `subtotal`, `come`, `is_take`) VALUES
+(35, 'ZMFqoyzfoJ', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000, 0, 0),
+(36, 'ZMFqoyzfoJ', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000, 0, 0),
+(37, 'ZMFqoyzfoJ', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000, 0, 0),
+(38, '5HAS6VxVYt', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000, 0, 0),
+(39, '5HAS6VxVYt', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000, 0, 0),
+(40, '5HAS6VxVYt', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000, 0, 0),
+(41, 'BIz4JsCY7L', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000, 0, 0),
+(42, 'BIz4JsCY7L', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000, 0, 0),
+(43, 'BIz4JsCY7L', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000, 0, 0),
+(44, 'MUl763WJM8', '03512HDL000', 'HONDA DISC LOCK', 96500, 1, 96500, 0, 0),
+(45, 'MUl763WJM8', '03512K1ZGBL', 'SMART KEY REMOTE COVER BLK', 56000, 1, 56000, 0, 0),
+(46, 'MUl763WJM8', '03512K1ZGCP', 'SMART KEY REMOTE COVER CPR', 56000, 1, 56000, 0, 0),
+(47, 'N9yTutBj14', '03512HDL000', 'HONDA DISC LOCK', 96500, 1, 96500, 0, 0),
+(48, 'N9yTutBj14', '04101MJSJ20', 'COVER COMP., A.C. GENERATOR', 2758500, 1, 2758500, 0, 0),
+(49, 'N9yTutBj14', '04801K0G900ZB', 'COVER COMP R BODYTE', 879500, 1, 879500, 0, 0),
+(50, 'N9yTutBj14', '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 2, 21355000, 0, 0),
+(51, 'N9yTutBj14', '04801K0G900ZD', 'COVER COMP R BODYTE', 879500, 1, 879500, 0, 0),
+(52, 'fablpqJ2Mv', '04801MGSD31ZC', 'TANK ASSY., FUEL', 10677500, 1, 10677500, 1, 0),
+(53, 'fablpqJ2Mv', '06111K26920', 'GASKET KIT A', 113000, 1, 113000, 1, 1),
+(54, 'VurAFsX8A4', '03512K1ZGRE', 'SMART KEY REMOTE COVER RED', 56000, 1, 56000, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -42133,15 +42137,16 @@ INSERT INTO `pesanan_detail_barang` (`id`, `kode_pesanan`, `kode_barang`, `nama_
 CREATE TABLE `profil_perusahaan` (
   `id` int(11) NOT NULL,
   `logo` varchar(255) NOT NULL,
-  `alamat` text NOT NULL
+  `alamat` text NOT NULL,
+  `whatsapp_admin` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `profil_perusahaan`
 --
 
-INSERT INTO `profil_perusahaan` (`id`, `logo`, `alamat`) VALUES
-(4, 'logo_1651154595.jpg', 'tess');
+INSERT INTO `profil_perusahaan` (`id`, `logo`, `alamat`, `whatsapp_admin`) VALUES
+(4, 'logo_1651154595.jpg', 'tess', '+6285296072649');
 
 -- --------------------------------------------------------
 
@@ -42162,7 +42167,10 @@ CREATE TABLE `slide_show` (
 
 INSERT INTO `slide_show` (`id`, `gambar`, `judul`, `deskripsi`) VALUES
 (1, 'gambar_1651823659.webp', 'Tes Gambar', 'Ini test gambar'),
-(2, 'gambar_1651824526.jpg', 'Tes Informasi', 'Ini test gambar');
+(2, 'gambar_1657186663.jpeg', 'Tes Informasi', 'Ini test gambar'),
+(3, 'gambar_1657186376.jpg', 'rrr', 'rrr'),
+(4, 'gambar_1657186390.jpg', 'fff', 'fff'),
+(5, 'gambar_1657186404.png', 'd', 'd');
 
 -- --------------------------------------------------------
 
@@ -42318,7 +42326,7 @@ ALTER TABLE `katalog_produk`
 -- AUTO_INCREMENT for table `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `master_parts`
@@ -42336,13 +42344,13 @@ ALTER TABLE `master_rekening_bank`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `pesanan_detail_barang`
 --
 ALTER TABLE `pesanan_detail_barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `profil_perusahaan`
@@ -42354,7 +42362,7 @@ ALTER TABLE `profil_perusahaan`
 -- AUTO_INCREMENT for table `slide_show`
 --
 ALTER TABLE `slide_show`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tipe_kendaraan`

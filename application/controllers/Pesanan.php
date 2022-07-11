@@ -126,6 +126,125 @@ class Pesanan extends MY_Controller
 		$search       = $this->input->post("search")["value"];
 		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
 
+		$where = "WHERE 1=1  AND a.kode_pesanan ='$kode' ";
+		$result = array();
+		if (isset($search)) {
+			if ($search != '') {
+				$where .= " AND (a.kode_barang LIKE '%$search%' OR a.nama_barang LIKE '%$search%')";
+			}
+		}
+
+		if (isset($orders)) {
+			if ($orders != '') {
+				$order = $orders;
+				$order_column = ['a.kode_pesanan'];
+				$order_clm  = $order_column[$order[0]['column']];
+				$order_by   = $order[0]['dir'];
+				$where .= " ORDER BY $order_clm $order_by ";
+			} else {
+				$where .= " ORDER BY a.id ASC ";
+			}
+		} else {
+			$where .= " ORDER BY a.id ASC ";
+		}
+		if (isset($LIMIT)) {
+			if ($LIMIT != '') {
+				$where .= ' ' . $LIMIT;
+			}
+		}
+		$index = 1;
+		$button = "";
+		$fetch = $this->db->query("SELECT a.*,b.* from pesanan_detail_barang a join pesanan b on a.kode_pesanan=b.kode_pesanan $where");
+		$fetch2 = $this->db->query("SELECT a.*,b.* from pesanan_detail_barang a join pesanan b on a.kode_pesanan=b.kode_pesanan where a.kode_pesanan ='$kode'");
+		foreach ($fetch->result() as $rows) {
+
+			$sub_array = array();
+			$sub_array[] = $index;
+			$sub_array[] = $rows->kode_barang;
+
+			$sub_array[] = $rows->nama_barang;
+			$sub_array[] = $rows->harga_barang;
+			$sub_array[] = $rows->qty_pesanan;
+			$sub_array[] = $rows->subtotal;
+
+			$result[]      = $sub_array;
+			$index++;
+		}
+		$output = array(
+			"draw"            =>     intval($this->input->post("draw")),
+			"recordsFiltered" =>     $fetch2->num_rows(),
+			"data"            =>     $result,
+
+		);
+		echo json_encode($output);
+	}
+	public function fetch_data_pesanan_datang()
+	{
+		$starts       = $this->input->post("start");
+		$length       = $this->input->post("length");
+		$LIMIT        = "LIMIT $starts, $length ";
+		$search       = $this->input->post("search")["value"];
+		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
+
+		$where = "WHERE 1=1 AND a.come ='1' AND a.is_take ='0' AND b.id_pelanggan='{$_SESSION['id']}' ";
+		$result = array();
+		if (isset($search)) {
+			if ($search != '') {
+				$where .= " AND (a.kode_barang LIKE '%$search%' OR a.nama_barang LIKE '%$search%')";
+			}
+		}
+
+		if (isset($orders)) {
+			if ($orders != '') {
+				$order = $orders;
+				$order_column = ['a.kode_pesanan'];
+				$order_clm  = $order_column[$order[0]['column']];
+				$order_by   = $order[0]['dir'];
+				$where .= " ORDER BY $order_clm $order_by ";
+			} else {
+				$where .= " ORDER BY a.id ASC ";
+			}
+		} else {
+			$where .= " ORDER BY a.id ASC ";
+		}
+		if (isset($LIMIT)) {
+			if ($LIMIT != '') {
+				$where .= ' ' . $LIMIT;
+			}
+		}
+		$index = 1;
+		$button = "";
+		$fetch = $this->db->query("SELECT a.*,b.* from pesanan_detail_barang a join pesanan b on a.kode_pesanan=b.kode_pesanan $where");
+		$fetch2 = $this->db->query("SELECT a.*,b.* from pesanan_detail_barang a join pesanan b on a.kode_pesanan=b.kode_pesanan  where a.come ='1' and a.is_take ='0' and b.id_pelanggan='{$_SESSION['id']}'");
+		foreach ($fetch->result() as $rows) {
+
+			$sub_array = array();
+			$sub_array[] = $index;
+			$sub_array[] = $rows->kode_pesanan;
+			$sub_array[] = $rows->kode_barang;
+			$sub_array[] = $rows->nama_barang;
+			$sub_array[] = $rows->harga_barang;
+			$sub_array[] = $rows->qty_pesanan;
+			$result[]      = $sub_array;
+			$index++;
+		}
+		$output = array(
+			"draw"            =>     intval($this->input->post("draw")),
+			"recordsFiltered" =>     $fetch2->num_rows(),
+			"data"            =>     $result,
+
+		);
+		echo json_encode($output);
+	}
+	public function fetch_data_pesanan2()
+	{
+		$starts       = $this->input->post("start");
+		$length       = $this->input->post("length");
+		$LIMIT        = "LIMIT $starts, $length ";
+		$kode         = $this->input->post("kode");
+		$search       = $this->input->post("search")["value"];
+		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
+
 		$where = "WHERE 1=1  AND kode_pesanan ='$kode' ";
 		$result = array();
 		if (isset($search)) {
@@ -153,19 +272,32 @@ class Pesanan extends MY_Controller
 			}
 		}
 		$index = 1;
-		$button = "";
 		$fetch = $this->db->query("SELECT * from pesanan_detail_barang $where");
 		$fetch2 = $this->db->query("SELECT * from pesanan_detail_barang  where kode_pesanan ='$kode'");
 		foreach ($fetch->result() as $rows) {
+			
+			$button = "";
+			$button2 = "";
+			if($rows->come == 1){
+				$button= '<input type="checkbox" id="come-true" value="'.$rows->id.'" checked="checked" name="come-true" onclick="handleCheckbox(this)"">';
+			}else{
+				$button= '<input type="checkbox" id="come-false" value="'.$rows->id.'" name="come-false" onclick="handleCheckbox(this)"">';
+			}
+			if($rows->is_take == 1){
+				$button2= '<input type="checkbox" id="come-true" value="'.$rows->id.'" checked="checked" disabled name="come-true" onclick="handleCheckboxTake(this)"">';
+			}else{
+				$button2= '<input type="checkbox" id="come-false" value="'.$rows->id.'" name="come-false" onclick="handleCheckboxTake(this)"">';
+			}
 
 			$sub_array = array();
 			$sub_array[] = $index;
 			$sub_array[] = $rows->kode_barang;
-
 			$sub_array[] = $rows->nama_barang;
 			$sub_array[] = $rows->harga_barang;
 			$sub_array[] = $rows->qty_pesanan;
 			$sub_array[] = $rows->subtotal;
+			$sub_array[] = $button;
+			$sub_array[] = $button2;
 
 			$result[]      = $sub_array;
 			$index++;
@@ -177,6 +309,34 @@ class Pesanan extends MY_Controller
 
 		);
 		echo json_encode($output);
+	}
+
+
+	public function sudah_datang(){
+		$id = $this->input->post('id');
+		$state = $this->input->post('state');
+		$this->db->where('id',$id);
+		$update=  $this->db->update('pesanan_detail_barang',['come'=>$state == "true" ? 1 : 0]);
+
+		if($update){
+			echo json_encode(array(
+				"status"=>$state,
+				"message"=>"Berhasil mengubah status barang",
+			));
+		}
+	}
+	public function sudah_datang_take(){
+		$id = $this->input->post('id');
+		$state = $this->input->post('state');
+		$this->db->where('id',$id);
+		$update=  $this->db->update('pesanan_detail_barang',['is_take'=>$state == "true" ? 1 : 0]);
+
+		if($update){
+			echo json_encode(array(
+				"status"=>$state,
+				"message"=>"Berhasil mengubah status barang",
+			));
+		}
 	}
 
 	public function read($id)
@@ -380,7 +540,7 @@ class Pesanan extends MY_Controller
 				'no_telepon' => $this->input->post('no_telepon', TRUE),
 				'foto_stnk' => $this->input->post('foto_stnk', TRUE),
 				'foto_motor' => $this->input->post('foto_motor', TRUE),
-				'status' => $this->input->post('status', TRUE),
+				'status' => $this->input->post('is_payment', TRUE) == '0' ? "belum_bayar" : $this->input->post('status', TRUE),
 				'tahun_perakitan' => $this->input->post('tahun_perakitan', TRUE),
 				'is_payment' => $this->input->post('is_payment', TRUE),
 				'is_come' => $this->input->post('is_come', TRUE),

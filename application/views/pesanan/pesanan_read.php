@@ -133,12 +133,9 @@
 						</div>
 					</div>
 
-					<div class="form-group row">
-						<label class="col-sm-12 col-md-2 col-form-label">Barang Sudah Tiba <?php echo form_error('is_come') ?></label>
-						<div class="col-sm-12 col-md-10">
-							<input type="text" class="form-control" readonly name="is_come" id="is_come" placeholder="Is Come" value="<?php echo $is_come == 1 ? "Ya" : "Tidak"; ?>" />
-						</div>
-					</div>
+				
+							<input type="hidden" class="form-control" readonly name="is_come" id="is_come" placeholder="Is Come" value="<?php echo $is_come == 1 ? "Ya" : "Tidak"; ?>" />
+					
 
 					<div class="form-group row">
 						<div class="col-md-12">

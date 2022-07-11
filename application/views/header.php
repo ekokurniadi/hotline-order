@@ -275,6 +275,14 @@
 							<li><a href="<?php echo base_url('informasi') ?>">Informasi</a></li>
 						</ul>
 					</li>
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle" data-option="off">
+							<span class="micon dw dw-money"></span><span class="mtext">Laporan</span>
+						</a>
+						<ul class="submenu">
+							<li><a href="<?php echo base_url('laporan_pemesanan') ?>">Laporan Pemesanan</a></li>
+						</ul>
+					</li>
 
 				</ul>
 			</div>
@@ -357,3 +365,4 @@
 			});
 		}
 	</script>
+

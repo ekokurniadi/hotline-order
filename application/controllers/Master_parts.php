@@ -245,9 +245,12 @@ class Master_parts extends MY_Controller
 
 					if ($cek->num_rows() <= 0) {
 						$insert = $this->db->insert('master_parts', $data);
+					}else{
+						$this->db->where('kode_barang',$rows['A']);
+						$update = $this->db->update('master_parts',["harga"=> $rows['C'],"nama_barang"=>$rows['B']]);
 					}
 				}
-				if ($insert) {
+				if ($insert || $update ) {
 					echo json_encode(array("status" => "sukses", "link" => base_url('master_parts')));
 					$_SESSION['pesan'] = "Data Berhasil di Upload.";
 					$_SESSION['tipe'] = "success";

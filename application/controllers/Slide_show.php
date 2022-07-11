@@ -171,11 +171,11 @@ class Slide_show extends MY_Controller
 	{
 		$this->_rules();
 
-		if ($this->form_validation->run() == FALSE) {
+		
 			$this->update($this->input->post('id', TRUE));
-		} else {
+		
 			$data = array(
-				'gambar' => $this->input->post('gambar', TRUE),
+				'gambar' => upload_gambar_biasa('gambar', 'uploads/slide_show/', 'png', 1000000, 'gambar'),
 				'judul' => $this->input->post('judul', TRUE),
 				'deskripsi' => $this->input->post('deskripsi', TRUE),
 			);
@@ -184,7 +184,7 @@ class Slide_show extends MY_Controller
 			$_SESSION['pesan'] = "Update Record Success";
 			$_SESSION['tipe'] = "success";
 			redirect(site_url('slide_show'));
-		}
+		
 	}
 
 	public function delete($id)

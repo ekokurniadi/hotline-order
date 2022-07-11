@@ -102,9 +102,9 @@
 				</div>
 
 				<div class="col-md-12 mt-2 mb-4">
-					<?php if ($header_pesanan->is_payment == 0) : ?>
+					<?php if ($header_pesanan->is_payment == 0 && $header_pesanan->status != 'batal' && $header_pesanan->status != 'selesai') : ?>
 						<button onclick="openModalUploadBuktiBayar();" class="btn btn-flat btn-primary">Upload Bukti Bayar</button>
-						<a onclick="return confirm('Apakah anda ingin membatalkan pesanan?')" href="<?= base_url('admin/pesanan/bayar/') . $header_pesanan->id_pesanan ?>" class="btn btn-flat btn-danger">Batalkan Pesanan</a>
+						<a onclick="return confirm('Apakah anda ingin membatalkan pesanan?')" href="<?= base_url('akun_saya/batal_pesanan/') . $header_pesanan->kode_pesanan ?>" class="btn btn-flat btn-danger">Batalkan Pesanan</a>
 					<?php endif; ?>
 				</div>
 

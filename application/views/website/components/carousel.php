@@ -7,9 +7,9 @@
 					<?php foreach ($slide_show as $keys => $value) : ?>
 						<div class="carousel-item <?php echo $keys == 0 ? "active" : "" ?>">
 							<img src="<?= base_url('uploads/slide_show/') . $value['gambar'] ?>" width="120px" class="img-c d-block w-100" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h5><?= $value['judul'] ?></h5>
-								<p><?= $value['deskripsi'] ?></p>
+							<div class="carousel-caption d-none d-md-block" >
+								<h5 style="text-shadow: 2px 2px 3px black;"><?= $value['judul'] ?></h5>
+								<p style="text-shadow: 2px 2px 3px black;"><?= $value['deskripsi'] ?></p>
 							</div>
 						</div>
 					<?php endforeach; ?>

@@ -77,6 +77,7 @@ class Profil_perusahaan extends MY_Controller
 			$sub_array[] = $index;
 			$sub_array[] = $rows->logo;
 			$sub_array[] = $rows->alamat;
+			$sub_array[] = $rows->whatsapp_admin;
 
 			$sub_array[] = '<div class="table-actions">' . $button1 . " " . $button2 . " " . $button3 . '</div>';
 			$result[]      = $sub_array;
@@ -118,6 +119,7 @@ class Profil_perusahaan extends MY_Controller
 			'id' => set_value('id'),
 			'logo' => set_value('logo'),
 			'alamat' => set_value('alamat'),
+			'whatsapp_admin' => set_value('whatsapp_admin'),
 		);
 
 		$this->load->view('header');
@@ -131,6 +133,7 @@ class Profil_perusahaan extends MY_Controller
 		$data = array(
 			'logo' =>  upload_gambar_biasa('logo', 'uploads/logo/', 'png|', 1000000, 'logo'),
 			'alamat' => $this->input->post('alamat', TRUE),
+			'whatsapp_admin' => $this->input->post('whatsapp_admin', TRUE),
 		);
 
 		$this->Profil_perusahaan_model->insert($data);
@@ -150,6 +153,7 @@ class Profil_perusahaan extends MY_Controller
 				'id' => set_value('id', $row->id),
 				'logo' => set_value('logo', $row->logo),
 				'alamat' => set_value('alamat', $row->alamat),
+				'whatsapp_admin' => set_value('whatsapp_admin', $row->whatsapp_admin),
 			);
 			$this->load->view('header');
 			$this->load->view('profil_perusahaan/profil_perusahaan_form', $data);
@@ -170,6 +174,7 @@ class Profil_perusahaan extends MY_Controller
 		$data = array(
 			'logo' => $_FILES['logo']['name'] == "" ? $row->logo : upload_gambar_biasa('logo', 'uploads/logo', 'png|', 1000000, 'logo'),
 			'alamat' => $this->input->post('alamat', TRUE),
+			'whatsapp_admin' => $this->input->post('whatsapp_admin', TRUE),
 		);
 
 		$this->Profil_perusahaan_model->update($this->input->post('id', TRUE), $data);

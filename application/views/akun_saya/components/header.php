@@ -61,7 +61,8 @@
 						<a class="collapse-item <?= $this->uri->segment('2') == 'profile' ? 'active' : '' ?>" href="<?= base_url('akun_saya/profile') ?>">Profil</a>
 						<a class="collapse-item <?= $this->uri->segment('2') == 'keranjang' ? 'active' : '' ?> " href="<?= base_url('akun_saya/keranjang') ?>">Keranjang</a>
 						<a class="collapse-item <?= $this->uri->segment('2') == 'checkout' ? 'active' : '' ?>" href="<?= base_url('akun_saya/checkout') ?>">Daftar Pesanan</a>
-						<a class="collapse-item <?= $this->uri->segment('2') == 'no_rekening' ? 'active' : '' ?>" href="<?= base_url('akun_saya/no_rekening') ?>">Informasi No. Rekeing</a>
+						<a class="collapse-item <?= $this->uri->segment('2') == 'no_rekening' ? 'active' : '' ?>" href="<?= base_url('akun_saya/no_rekening') ?>">Informasi No. Rekening</a>
+						<a class="collapse-item <?= $this->uri->segment('2') == 'informasi' ? 'active' : '' ?>" href="<?= base_url('akun_saya/informasi') ?>">Informasi Penting </a>
 
 					</div>
 				</div>
@@ -87,7 +88,7 @@
 					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
 						<i class="fa fa-bars"></i>
 					</button>
-					<div style="width: 100%;">
+					<!-- <div style="width: 100%;">
 						<h6 class="m-0 font-weight-bold text-danger">Informasi Penting :</h6>
 						<?php $info = $this->db->get('informasi')->result(); ?>
 						<marquee behavior="" direction="left">
@@ -96,7 +97,7 @@
 							<?php endforeach; ?>
 						</marquee>
 
-					</div>
+					</div> -->
 					<!-- Topbar Navbar -->
 					<ul class="navbar-nav ml-auto">
 
@@ -114,7 +115,7 @@
 							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
 
-								<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+								<a class="dropdown-item" href="<?=base_url('auth_client/logout')?>" data-toggle="modal" data-target="#logoutModal">
 									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 									Logout
 								</a>

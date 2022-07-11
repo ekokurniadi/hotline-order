@@ -45,6 +45,43 @@
 			top: 7px;
 			background: yellow;
 		}
+
+		.float {
+			position: fixed;
+			width: 150px;
+			height: 37;
+			bottom: 40px;
+			right: 40px;
+			background-color: #25d366;
+			padding-bottom: 13px;
+			color: #FFF;
+			border-radius: 50px;
+			text-align: center;
+			font-size: 30px;
+			box-shadow: 2px 2px 3px #999;
+			z-index: 100;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+		}
+
+		.float:hover{
+			text-decoration: none;
+			color: white;
+		}
+
+		.tanya {
+			align-self: center;
+			font-size: 15px;
+			margin-top: 12px;
+			margin-left: 10px;
+
+		}
+
+		.my-float {
+			margin-top: 16px;
+		}
 	</style>
 </head>
 
@@ -159,3 +196,9 @@
 	$_SESSION['pesan'] = '';
 
 	?>
+
+<?php $data = $this->db->get('profil_perusahaan')->row();?>
+	<a href="https://wa.me/<?=$data->whatsapp_admin?>?text=Hallo Admin, saya memerlukan bantuan." class="float" target="_blank">
+		<i class="fa fa-whatsapp my-float"></i>
+		<span class="tanya">Tanya Admin</span>
+	</a>

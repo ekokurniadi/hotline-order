@@ -1,6 +1,6 @@
 	<footer style="position: static;bottom:0;left:0;right:0;margin-top:10px">
 		<div class="footer-wrap pd-20 mb-20 card-box">
-			Made with love <i class="fa fa-heart text-danger"></i> <a href="https://gocodings.web.app" style="text-decoration: none;" target="_blank"> Gocodings.web.app</a>
+		 Copyright &copy;2022
 		</div>
 	</footer>
 	<!-- js -->

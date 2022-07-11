@@ -40,6 +40,13 @@
 						</div>
 					</div>
 
+					<div class="form-group row">
+						<label class="col-sm-12 col-md-2 col-form-label">Whatsapp Admin <?php echo form_error('logo') ?></label>
+						<div class="col-sm-12 col-md-10">
+							<input type="text" class="form-control" name="whatsapp_admin" id="whatsapp_admin" placeholder="whatsapp_admin" value="<?php echo $logwhatsapp_admino; ?>" />
+						</div>
+					</div>
+
 
 					<div class="card-footer text-left">
 						<input type="hidden" name="id" value="<?php echo $id; ?>" />

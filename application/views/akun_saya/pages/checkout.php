@@ -1,3 +1,6 @@
+<body onload="isCome()">
+	
+
 <div class="card shadow mb-4">
 	<div class="card-header">
 		<h6 class="m-0 font-weight-bold text-primary">Daftar Pesanan</h6>
@@ -22,8 +25,8 @@
 					</div>
 
 					<div>
-						<a href="?status=diambil" class="<?= $_GET['status'] == 'diambil' ? 'active-href' : '' ?>">Siap Diambil</a>
-						<div class="<?= $_GET['status'] == 'diambil' ? 'actived' : '' ?>"></div>
+						<a href="?status=1" onclick="isCome()" class="<?= $_GET['status'] == '1' ? 'active-href' : '' ?>">Siap Diambil</a>
+						<div class="<?= $_GET['status'] == '1' ? 'actived' : '' ?>"></div>
 					</div>
 
 					<div>
@@ -32,8 +35,9 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
-				<div class="col-md-12 mt-3">
+				<div class="col-md-12 mt-3" id="t">
 					<div class="table-responsive">
 						<table class="table table-bordered" id="example1">
 							<thead>
@@ -50,6 +54,7 @@
 						</table>
 						<script>
 							$(document).ready(function() {
+								isCome();
 								dataTable = $('#example1').DataTable({
 									"processing": true,
 									"serverSide": true,
@@ -87,10 +92,83 @@
 									});
 								});
 							});
+							function isCome(){
+								console.log('<?=$_GET['status']?>');
+								if('<?=$_GET['status']?>'=="1"){
+									$('#t').hide();
+									$('#s').show();
+								}else{
+									$('#t').show();
+									$('#s').hide();
+								}
+							}
 						</script>
 					</div>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-md-12 mt-3" id="s">
+					<div class="table-responsive">
+						<table class="table table-bordered" id="example2">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>No Pesanan</th>
+									<th>Kode Barang</th>
+									<th>Nama Barang</th>
+									<th>Harga Barang</th>
+									<th>Jumlah Pemesanan</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+						<script>
+							$(document).ready(function() {
+								
+								dataTable = $('#example2').DataTable({
+									"processing": true,
+									"serverSide": true,
+									"scrollX": false,
+									"language": {
+										"infoFiltered": "",
+										"processing": "<td style='text-align:center;width:100%;display:block;'><i class='fa fa-spinner fa-spin' style='font-size:80px'></i> </td>",
+									},
+									"order": [],
+									"lengthMenu": [
+										[10, 25, 50, 75, 100],
+										[10, 25, 50, 75, 100]
+									],
+									"ajax": {
+										url: "<?php echo site_url('pesanan/fetch_data_pesanan_datang'); ?>",
+										type: "POST",
+										dataSrc: "data",
+										data: function(d) {
+											d.status = '<?= $_GET['status'] == '' ? 'belum_bayar' : $_GET['status'] ?>'
+										},
+									},
+									"columnDefs": [{
+										"targets": [0],
+										"className": 'text-center'
+									}, ],
+								});
+								dataTable.on('draw.dt', function() {
+									var info = dataTable.page.info();
+									dataTable.column(0, {
+										search: 'applied',
+										order: 'applied',
+										page: 'applied'
+									}).nodes().each(function(cell, i) {
+										cell.innerHTML = i + 1 + info.start + ".";
+									});
+								});
+							});
+							
+						</script>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 	</div>
