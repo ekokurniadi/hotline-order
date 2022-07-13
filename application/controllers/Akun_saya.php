@@ -105,17 +105,21 @@ class Akun_saya extends MY_Controller
 
 	function acak($panjang)
 	{
-		$karakter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
-		$string = '';
-		for ($i = 0; $i < $panjang; $i++) {
-			$pos = rand(0, strlen($karakter) - 1);
-			$string .= $karakter{
-				$pos};
-		}
-		// echo json_encode(array(
-		// 	"data" => $string,
-		// ));
-		return $string;
+		date_default_timezone_set('Asia/Jakarta');
+        $day = date('d');
+        $month = date('m');
+        $year = substr(date('Y'), -2);
+        $year2 = date('Y');
+        $get_data = $this->db->query("SELECT * from pesanan where month(tanggal_dibuat)='$month' and year(tanggal_dibuat)='$year2' order by tanggal_dibuat DESC limit 1 ");
+
+        if ($get_data->num_rows() > 0) {
+            $row        = $get_data->row();
+            $kode = substr($row->kode_pesanan, -3);
+            $new_kode = "HL-".$year.$month.$day."-". sprintf("%'.03d", $kode + 1);
+        } else {
+            $new_kode   = "HL-".$year.$month.$day."-"."001";
+        }
+        return strtoupper($new_kode);
 	}
 
 	public function download_invoice($id)
@@ -259,11 +263,14 @@ class Akun_saya extends MY_Controller
 		}
 		$index = 1;
 		$button = "";
+		$button2 = "";
 		$fetch = $this->db->query("SELECT * from pesanan $where");
 		$fetch2 = $this->db->query("SELECT * from pesanan where status ='{$status}' and id_pelanggan='{$_SESSION['id']}'");
 		foreach ($fetch->result() as $rows) {
 			$button = '<a href="' . base_url('akun_saya/detail_pesanan/' . $rows->kode_pesanan) . '" class="btn btn-success btn-sm btn-flat">Detail</a>';
-			$button2 = '<a href="' . base_url('akun_saya/download_invoice/' . $rows->id) . '" class="btn btn-primary btn-sm btn-flat">Download Invoice</a>';
+			if($rows->is_payment==1){
+				$button2 = '<a href="' . base_url('akun_saya/download_invoice/' . $rows->id) . '" class="btn btn-primary btn-sm btn-flat">Download Invoice</a>';
+			}
 
 			$sub_array = array();
 			$sub_array[] = $index;

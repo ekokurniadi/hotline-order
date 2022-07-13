@@ -64,7 +64,7 @@
 		margin-top: 10px;
 	}
 </style>
-<div class="modal fade" id="modalCheckout" tabindex="-1" aria-labelledby="modalCheckout" aria-hidden="true">
+<div class="modal fade" id="modalCheckout" aria-labelledby="modalCheckout" aria-hidden="true" style="overflow:auto;">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -82,32 +82,32 @@
 							</div>
 							<div class="col-md-3">
 								<label for="">Nama Lengkap</label>
-								<input type="text" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap" required value="<?= $_SESSION['nama_lengkap'] ?>">
+								<input type="text" class="form-control" autocomplete="off" id="nama_lengkap" placeholder="Nama Lengkap" required value="<?= $_SESSION['nama_lengkap'] ?>">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Telpon</label>
-								<input type="text" class="form-control" id="no_telepon" placeholder="No Telpon" required value="<?= $_SESSION['no_hp'] ?>">
+								<input type="text" class="form-control" autocomplete="off" id="no_telepon" placeholder="No Telpon" required value="<?= $_SESSION['no_hp'] ?>">
 							</div>
 							<div class="col-md-6">
 								<label for="">Alamat</label>
-								<input type="text" class="form-control" id="alamat" placeholder="Alamat" required value="<?= $_SESSION['alamat'] ?>">
+								<input type="text" class="form-control" autocomplete="off" id="alamat" placeholder="Alamat" required value="<?= $_SESSION['alamat'] ?>">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Mesin</label>
-								<input type="text" class="form-control" placeholder="No. Mesin" required name="no_mesin" id="no_mesin">
+								<input type="text" class="form-control" autocomplete="off" placeholder="No. Mesin" required name="no_mesin" id="no_mesin">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Rangka</label>
-								<input type="text" class="form-control" placeholder="No. Rangka" required name="no_rangka" id="no_rangka">
+								<input type="text" class="form-control" autocomplete="off" placeholder="No. Rangka" required name="no_rangka" id="no_rangka">
 							</div>
 							<div class="col-md-3">
 								<label for="">No. Polisi</label>
-								<input type="text" class="form-control" placeholder="No. Polisi" required name="no_polisi" id="no_polisi">
+								<input type="text" class="form-control" autocomplete="off" placeholder="No. Polisi" required name="no_polisi" id="no_polisi">
 							</div>
 							<div class="col-md-3">
 								<?php $years = range(1900, strftime("%Y", time())); ?>
 								<label for="">Tahun Perakitan</label>
-								<select name="tahun_perakitan" class="form-control" id="tahun_perakitan">
+								<select name="tahun_perakitan" class="form-control"  style="width: 100%;" id="tahun_perakitan">
 									<option>Pilih Tahun</option>
 									<?php foreach ($years as $year) : ?>
 										<option value="<?php echo $year; ?>"><?php echo $year; ?></option>
@@ -329,4 +329,16 @@
 			});
 		}
 	});
+</script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#tahun_perakitan').select2({
+      width: 'resolve',
+      placeholder: "Select an option",
+	  tags: true,
+    // dropdownParent: $("#modalCheckout")
+    });
+  });
 </script>

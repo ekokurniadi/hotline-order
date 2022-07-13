@@ -14,13 +14,13 @@
 						<form method="POST" action="<?= base_url('auth_client') ?>" class="needs-validation" novalidate="">
 							<form accept-charset="UTF-8" role="form" class="form-signin">
 								<tr>
-									<td><input type="text" required class="tanya" name="username" id="username" placeholder="Username"></td>
+									<td><input type="text" required autocomplete="off" class="tanya" name="username" id="username" placeholder="Username"></td>
 								</tr>
 								<tr>
-									<td><input type="password" required class="tanya" name="password" id="password" placeholder="Password"></td>
+									<td><input type="password" required autocomplete="off" class="tanya" name="password" id="password" placeholder="Password"></td>
 								</tr>
 								<tr>
-									<td><input type="checkbox" onclick="Toggle()" class="tanya" name="password" id="password" placeholder="Password">
+									<td><input type="checkbox" onclick="ToggleLogin()" class="tanya" name="password"  placeholder="Password">
 										<label for="" style="font-size: 10pt;">Show Password</label>
 									</td>
 								</tr>
@@ -38,7 +38,7 @@
 </section>
 <script>
 	// Change the type of input to password or text
-	function Toggle() {
+	function ToggleLogin() {
 		var temp = document.getElementById("password");
 		if (temp.type === "password") {
 			temp.type = "text";

@@ -14,7 +14,7 @@
 						<form method="POST" action="<?= base_url('auth_client/register') ?>" class="needs-validation" novalidate="">
 							<form accept-charset="UTF-8" role="form" class="form-signin">
 								<tr>
-									<td><input type="text" required class="tanya" name="nama_lengkap" id="nama_lengkap" placeholder="Nama Lengkap"></td>
+									<td><input type="text" required autocomplete="off" class="tanya" name="nama_lengkap" id="nama_lengkap" placeholder="Nama Lengkap"></td>
 								</tr>
 								<tr>
 									<td>
@@ -26,19 +26,19 @@
 									</td>
 								</tr>
 								<tr>
-									<td><input type="text" required class="tanya" name="no_telepon" id="no_telepon" placeholder="No.Hp"></td>
+									<td><input type="text" required autocomplete="off" class="tanya" name="no_telepon" id="no_telepon" placeholder="No.Hp"></td>
 								</tr>
 								<tr>
-									<td><input type="text" required class="tanya" name="alamat" id="alamat" placeholder="Alamat"></td>
+									<td><input type="text" required autocomplete="off" class="tanya" name="alamat" id="alamat" placeholder="Alamat"></td>
 								</tr>
 								<tr>
-									<td><input type="text" required class="tanya" name="username" id="username" placeholder="Email"></td>
+									<td><input type="text" required  autocomplete="off" class="tanya" name="username" id="username" placeholder="Email"></td>
 								</tr>
 								<tr>
-									<td><input type="password" required class="tanya" name="password" id="password" placeholder="Password"></td>
+									<td><input type="password" required autocomplete="off" class="tanya" name="password" id="passwords" placeholder="Password"></td>
 								</tr>
 								<tr>
-									<td><input type="checkbox" onclick="Toggle()" class="tanya" name="password" id="password" placeholder="Password">
+								<td><input type="checkbox" onclick="Toggles()" class="tanya" name="password"  placeholder="Password">
 										<label for="" style="font-size: 10pt;">Show Password</label>
 									</td>
 								</tr>
@@ -57,8 +57,8 @@
 </section>
 <script>
 	// Change the type of input to password or text
-	function Toggle() {
-		var temp = document.getElementById("password");
+	function Toggles() {
+		var temp = document.getElementById("passwords");
 		if (temp.type === "password") {
 			temp.type = "text";
 		} else {

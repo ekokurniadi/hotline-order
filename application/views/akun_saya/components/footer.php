@@ -8,7 +8,7 @@
 <footer class="sticky-footer bg-white">
 	<div class="container my-auto">
 		<div class="copyright text-center my-auto">
-			<span>Copyright &copy; Your Website 2020</span>
+			<span>HOTLINE ORDER MWP RIMBO</span>
 		</div>
 	</div>
 </footer>
@@ -43,6 +43,7 @@
 		</div>
 	</div>
 </div>
+
 
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('akun_saya_assets/') ?>vendor/jquery/jquery.min.js"></script>
@@ -82,6 +83,7 @@
 		});
 	}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 </body>
 
 </html>
