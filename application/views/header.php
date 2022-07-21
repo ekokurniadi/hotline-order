@@ -319,7 +319,7 @@
 
 		function getPengumuman() {
 			$.ajax({
-				url: "<?php echo site_url('api/getNotificationAdmin'); ?>",
+				url: "<?php echo site_url('panel/notifikasi'); ?>",
 				cache: false,
 				type: "POST",
 				dataType: 'JSON',

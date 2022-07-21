@@ -27,6 +27,14 @@ class Website extends MY_Controller
 		$this->load->view('website/components/footer');
 	}
 
+	public function notifikasi(){
+		$id = $this->input->post('id');
+		$query = $this->db->get_where('notifikasi',['id_user'=>$id,'status'=>0])->num_rows();
+		echo json_encode(array(
+			"total"=> $query,
+		));
+	}
+
 	public function fetch_katalog()
 	{
 		$starts       = $this->input->post("start");

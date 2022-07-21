@@ -314,14 +314,27 @@ class Pesanan extends MY_Controller
 
 	public function sudah_datang(){
 		$id = $this->input->post('id');
+		$id_pelanggan = $this->input->post('user_id');
+		$kode_pesanan = $this->input->post('kode_pesanan');
 		$state = $this->input->post('state');
 		$this->db->where('id',$id);
 		$update=  $this->db->update('pesanan_detail_barang',['come'=>$state == "true" ? 1 : 0]);
 
+		$barang = $this->db->get_where('pesanan_detail_barang',['id'=>$id])->row();
 		if($update){
 			echo json_encode(array(
 				"status"=>$state,
 				"message"=>"Berhasil mengubah status barang",
+			));
+		}
+
+		if($state=="true"){
+			$pesan = "Barang {$barang->nama_barang} dengan kode order $kode_pesanan sudah siap untuk diambil, silahkan hubungi admin untuk proses selanjutnya";
+			$insert = $this->db->insert('notifikasi',array(
+				"id_user"=>$id_pelanggan,
+				"pesan"=>$pesan,
+				"status"=>0,
+				"link"=>'akun_saya/notifikasi?status=1'
 			));
 		}
 	}
@@ -511,9 +524,13 @@ class Pesanan extends MY_Controller
 				'is_come' => set_value('is_come', $row->is_come),
 				'bukti_bayar' => set_value('bukti_bayar', $row->bukti_bayar),
 			);
+			
+			
+			
 			$this->load->view('header');
 			$this->load->view('pesanan/pesanan_form', $data);
 			$this->load->view('footer');
+
 		} else {
 			$_SESSION['pesan'] = "Record Not Found";
 			$_SESSION['tipe'] = "error";
@@ -546,6 +563,16 @@ class Pesanan extends MY_Controller
 				'is_come' => $this->input->post('is_come', TRUE),
 				'bukti_bayar' => $this->input->post('bukti_bayar', TRUE),
 			);
+
+			if($this->input->post('is_payment')=='0'){
+				$pesan = "Pembayaran untuk pesanan dengan kode order {$this->input->post('kode_pesanan')} tidak valid, silahkan upload ulang bukti bayar anda";
+				$insert = $this->db->insert('notifikasi',array(
+					"id_user"=>$this->input->post('id_pelanggan'),
+					"pesan"=>$pesan,
+					"status"=>0,
+					"link"=>'akun_saya/notifikasi?status=belum_bayar'
+				));
+			}
 
 			$this->Pesanan_model->update($this->input->post('id', TRUE), $data);
 			$_SESSION['pesan'] = "Update Record Success";

@@ -30,7 +30,7 @@
 	
 </head>
 
-<body id="page-top" onload="checkSesion()">
+<body id="page-top" onload="checkSesion();getNotif();">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -62,7 +62,7 @@
 					<i class="fas fa-fw fa-folder"></i>
 					<span>Menu</span>
 				</a>
-				<div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+				<div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Navigasi</h6>
 						<a class="collapse-item <?= $this->uri->segment('2') == 'profile' ? 'active' : '' ?>" href="<?= base_url('akun_saya/profile') ?>">Profil</a>
@@ -70,6 +70,7 @@
 						<a class="collapse-item <?= $this->uri->segment('2') == 'checkout' ? 'active' : '' ?>" href="<?= base_url('akun_saya/checkout') ?>">Daftar Pesanan</a>
 						<a class="collapse-item <?= $this->uri->segment('2') == 'no_rekening' ? 'active' : '' ?>" href="<?= base_url('akun_saya/no_rekening') ?>">Informasi No. Rekening</a>
 						<a class="collapse-item <?= $this->uri->segment('2') == 'informasi' ? 'active' : '' ?>" href="<?= base_url('akun_saya/informasi') ?>">Informasi Penting </a>
+						<a class="collapse-item <?= $this->uri->segment('2') == 'notifikasi' ? 'active' : '' ?>" href="<?= base_url('akun_saya/notifikasi') ?>">Notifikasi <span id="ntf" class="badge" style="background-color: red;color:white">5</span></a>
 
 					</div>
 				</div>
@@ -109,7 +110,7 @@
 					<ul class="navbar-nav ml-auto">
 
 
-
+						<li lass="nav-item dropdown no-arrow" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">a</li>
 						<div class="topbar-divider d-none d-sm-block"></div>
 
 						<!-- Nav Item - User Information -->
@@ -171,3 +172,24 @@
 
 		?>
 	</div>
+
+	<script>
+		function getNotif(){
+			$.ajax({
+				url:"<?=base_url('website/notifikasi')?>",
+				type: 'POST',
+				data: {
+					id: '<?= $_SESSION['id'] ?>'
+				},
+				dataType: 'JSON',
+				success: function(response) {
+					$('#ntf').html(response.total);
+				},
+				error: function() {
+					alert("Something Went Wrong !");
+				}
+			});
+		}
+	</script>
+
+	</script>

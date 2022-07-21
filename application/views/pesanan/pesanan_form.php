@@ -256,7 +256,7 @@
 				url:"<?=base_url('pesanan/sudah_datang')?>",
 				method:"POST",
 				dataType:"JSON",
-				data:{"id":value.value,"state":value.checked},
+				data:{"id":value.value,"state":value.checked,"user_id":'<?=$id_pelanggan?>',"kode_pesanan":'<?=$kode_pesanan?>'},
 				success:function(res){
 					alert(res.message);
 					dataTable.draw();

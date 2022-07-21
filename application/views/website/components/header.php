@@ -85,7 +85,7 @@
 	</style>
 </head>
 
-<body onload="getKeranjang();">
+<body onload="getKeranjang();getNotif();">
 	<!-- navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #c01d02;">
 		<div class="container">
@@ -119,6 +119,13 @@
 								Keranjang
 							</a>
 							<span class="badge" id="badge"></span>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('akun_saya/notifikasi') ?>">
+								<i class="fa fa-bell"></i>
+								Notifikasi
+							</a>
+							<span class="badge" id="badge-notif"></span>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<?= base_url('akun_saya') ?>">
@@ -172,6 +179,24 @@
 				dataType: 'JSON',
 				success: function(response) {
 					$('#badge').html(response.total);
+					
+				},
+				error: function() {
+					alert("Something Went Wrong !");
+				}
+			});
+		}
+
+		function getNotif(){
+			$.ajax({
+				url:"<?=base_url('website/notifikasi')?>",
+				type: 'POST',
+				data: {
+					id: '<?= $_SESSION['id'] ?>'
+				},
+				dataType: 'JSON',
+				success: function(response) {
+					$('#badge-notif').html(response.total);
 				},
 				error: function() {
 					alert("Something Went Wrong !");

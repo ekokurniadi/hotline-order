@@ -50,9 +50,89 @@ class Akun_saya extends MY_Controller
 		$this->load->view('akun_saya/pages/pembayaran');
 		$this->load->view('akun_saya/components/footer');
 	}
+	public function notifikasi()
+	{
+		$this->load->view('akun_saya/components/header');
+		$this->load->view('akun_saya/pages/notifikasi_user');
+		$this->load->view('akun_saya/components/footer');
+	}
+	public function fetch_notifikasi()
+	{
+		$starts       = $this->input->post("start");
+		$length       = $this->input->post("length");
+		$LIMIT        = "LIMIT $starts, $length ";
+		$draw         = $this->input->post("draw");
+		$search       = $this->input->post("search")["value"];
+		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
+
+		$where = "WHERE 1=1 and id_user='{$_SESSION['id']}' and status ='0'";
+		$result = array();
+		if (isset($search)) {
+			if ($search != '') {
+				$where .= " AND (urutan LIKE '%$search%'
+	 AND (informasi LIKE '%$search%'
+	 )";
+			}
+		}
+
+		if (isset($orders)) {
+			if ($orders != '') {
+				$order = $orders;
+				$order_column = ['urutan', 'informasi',];
+				$order_clm  = $order_column[$order[0]['column']];
+				$order_by   = $order[0]['dir'];
+				$where .= " ORDER BY $order_clm $order_by ";
+			} else {
+				$where .= " ORDER BY id ASC ";
+			}
+		} else {
+			$where .= " ORDER BY id ASC ";
+		}
+		if (isset($LIMIT)) {
+			if ($LIMIT != '') {
+				$where .= ' ' . $LIMIT;
+			}
+		}
+		$index = 1;
+		$button = "";
+		$fetch = $this->db->query("SELECT * from notifikasi $where");
+		$fetch2 = $this->db->query("SELECT * from notifikasi where id_user='{$_SESSION['id']}' and status ='0'");
+		foreach ($fetch->result() as $rows) {
+			$button1 = "<a href=" . base_url(''.$rows->link.'') . " class='btn btn-primary btn-sm' onclick='sudahBaca($rows->id)'>Tandai Sudah dibaca</a>";
+
+			$sub_array = array();
+			$sub_array[] = $index;
+			$sub_array[] = $rows->pesan;
+			// $sub_array[] = '<input type"text" value="'.$rows->id.'" id="kode'.$rows->id.'">';
+
+			$sub_array[] = '<div class="table-actions">' . $button1 . '</div>';
+			$result[]      = $sub_array;
+			$index++;
+		}
+		
+		$output = array(
+			"draw"            =>     intval($this->input->post("draw")),
+			"recordsFiltered" =>     $fetch2->num_rows(),
+			"data"            =>     $result,
+
+		);
+		echo json_encode($output);
+
+		
+	}
+
+	public function update_notif($id){
+
+		$this->db->where('id',$id);
+		$this->db->update('notifikasi',['status'=>1]);
+		echo json_encode(array(
+			"d"=>$id,
+		));
+	}
+
 	public function profile()
 	{
-		
+
 		$user = $this->db->get_where('user', ['id' => $_SESSION['id']])->row();
 		$data = array(
 			"id" => $user->id,
@@ -106,20 +186,20 @@ class Akun_saya extends MY_Controller
 	function acak($panjang)
 	{
 		date_default_timezone_set('Asia/Jakarta');
-        $day = date('d');
-        $month = date('m');
-        $year = substr(date('Y'), -2);
-        $year2 = date('Y');
-        $get_data = $this->db->query("SELECT * from pesanan where month(tanggal_dibuat)='$month' and year(tanggal_dibuat)='$year2' order by tanggal_dibuat DESC limit 1 ");
+		$day = date('d');
+		$month = date('m');
+		$year = substr(date('Y'), -2);
+		$year2 = date('Y');
+		$get_data = $this->db->query("SELECT * from pesanan where month(tanggal_dibuat)='$month' and year(tanggal_dibuat)='$year2' order by tanggal_dibuat DESC limit 1 ");
 
-        if ($get_data->num_rows() > 0) {
-            $row        = $get_data->row();
-            $kode = substr($row->kode_pesanan, -3);
-            $new_kode = "HL-".$year.$month.$day."-". sprintf("%'.03d", $kode + 1);
-        } else {
-            $new_kode   = "HL-".$year.$month.$day."-"."001";
-        }
-        return strtoupper($new_kode);
+		if ($get_data->num_rows() > 0) {
+			$row        = $get_data->row();
+			$kode = substr($row->kode_pesanan, -3);
+			$new_kode = "HL-" . $year . $month . $day . "-" . sprintf("%'.03d", $kode + 1);
+		} else {
+			$new_kode   = "HL-" . $year . $month . $day . "-" . "001";
+		}
+		return strtoupper($new_kode);
 	}
 
 	public function download_invoice($id)
@@ -144,15 +224,15 @@ class Akun_saya extends MY_Controller
 			'is_come' => $row->is_come,
 			'bukti_bayar' => $row->bukti_bayar,
 		);
-		
-		
+
+
 		$this->load->library('pdf');
 		$mpdf                           = $this->pdf->load();
 		$mpdf->allow_charset_conversion = false;  // Set by default to TRUE
 		$mpdf->charset_in               = 'UTF-8';
 		$mpdf->autoLangToFont           = true;
 		$mpdf->AddPage('P');
-		
+
 		$mpdf->SetDisplayMode('fullwidth');
 		$html = $this->load->view('pesanan/invoice', $data, true);
 
@@ -189,7 +269,15 @@ class Akun_saya extends MY_Controller
 
 		$insert_header = $this->db->insert('pesanan', $data);
 		if ($insert_header) {
-
+			
+				$pesan = "Pesanan baru dengan kode $kode, silahkan lihat detail pesanan";
+				$insert = $this->db->insert('notifikasi',array(
+					"id_user"=>0,
+					"pesan"=>$pesan,
+					"status"=>0,
+					"link"=>'pesanan/update/'.$this->db->insert_id(),
+				));
+			
 			foreach ($detail as $rows) {
 				$dt = array(
 					"kode_pesanan" => $kode,
@@ -220,11 +308,11 @@ class Akun_saya extends MY_Controller
 		$orders       = isset($_POST["order"]) ? $_POST["order"] : '';
 		$status       = $this->input->post('status') == "" ? "belum_bayar" : $this->input->post('status');
 
-		$ignore =" AND is_payment != '0'";
+		$ignore = " AND is_payment != '0'";
 
-		if($status=="selesai"){
+		if ($status == "selesai") {
 			$where = "WHERE 1=1 AND status ='{$status}' and id_pelanggan='{$_SESSION['id']}' $ignore ";
-		}else{
+		} else {
 			$where = "WHERE 1=1 AND status ='{$status}' and id_pelanggan='{$_SESSION['id']}' ";
 		}
 
@@ -268,7 +356,7 @@ class Akun_saya extends MY_Controller
 		$fetch2 = $this->db->query("SELECT * from pesanan where status ='{$status}' and id_pelanggan='{$_SESSION['id']}'");
 		foreach ($fetch->result() as $rows) {
 			$button = '<a href="' . base_url('akun_saya/detail_pesanan/' . $rows->kode_pesanan) . '" class="btn btn-success btn-sm btn-flat">Detail</a>';
-			if($rows->is_payment==1){
+			if ($rows->is_payment == 1) {
 				$button2 = '<a href="' . base_url('akun_saya/download_invoice/' . $rows->id) . '" class="btn btn-primary btn-sm btn-flat">Download Invoice</a>';
 			}
 
@@ -278,7 +366,7 @@ class Akun_saya extends MY_Controller
 			$sub_array[] = formatTanggal($rows->tanggal_dibuat);
 			$sub_array[] = number_format($this->db->query("SELECT COALESCE(SUM(subtotal)) as subtotal from pesanan_detail_barang where kode_pesanan='$rows->kode_pesanan'")->row()->subtotal, 0, ',', '.');
 			$sub_array[] = $rows->is_payment == 0 ? '<span class="badge badge-danger">Belum Lunas</span>' : '<span class="badge badge-success">Lunas</span>';
-			$sub_array[] = $button ." ".$button2 ;
+			$sub_array[] = $button . " " . $button2;
 			$result[]      = $sub_array;
 			$index++;
 		}
@@ -304,6 +392,13 @@ class Akun_saya extends MY_Controller
 		$this->db->where('kode_pesanan', $kode);
 		$update = $this->db->update('pesanan', $data);
 		if ($update) {
+			$pesan = "Pesanan dengan kode $kode sudah dilakukan pembayaran, silahkan lihat detail pesanan";
+				$insert = $this->db->insert('notifikasi',array(
+					"id_user"=>0,
+					"pesan"=>$pesan,
+					"status"=>0,
+					"link"=>'pesanan/update/'.$this->db->insert_id(),
+				));
 			echo json_encode(array(
 				"status" => 200,
 				"message" => "Bukti pembayaran berhasil di upload"
@@ -321,7 +416,7 @@ class Akun_saya extends MY_Controller
 
 	public function save_profile()
 	{
-		
+
 		$data = array(
 			"nama_lengkap" => $_POST['nama_lengkap'],
 			"jenis_kelamin" => $_POST['jenis_kelamin'],
@@ -342,9 +437,10 @@ class Akun_saya extends MY_Controller
 		}
 	}
 
-	public function batal_pesanan($id){
-		$this->db->where('kode_pesanan',$id);
-		$update = $this->db->update('pesanan',['status'=>'batal']);
+	public function batal_pesanan($id)
+	{
+		$this->db->where('kode_pesanan', $id);
+		$update = $this->db->update('pesanan', ['status' => 'batal']);
 
 		if ($update) {
 			$_SESSION['pesan'] = "Update Data Berhasil";

@@ -57,6 +57,25 @@ class Panel extends MY_Controller
 			redirect(site_url('dashboard'));
 		}
 	}
+
+	public function notifikasi(){
+		$query= $this->db->query("SELECT * FROM notifikasi where id_user ='0' and status='0'")->result();
+		$data=array();
+		$id = 0;
+		foreach($query as $rows){
+			$sub_array=array();
+			$sub_array[]=$rows->id;
+			$sub_array[]="";
+			$sub_array[]=base_url(''.$rows->link.'');
+			$sub_array[]=$rows->pesan;
+			$data[]=$sub_array;
+			
+		}
+
+		echo json_encode(array(
+			"data"=>$data
+		));
+	}
 	public function _rules()
 	{
 		$this->form_validation->set_rules('nama', 'nama', 'trim|required');
